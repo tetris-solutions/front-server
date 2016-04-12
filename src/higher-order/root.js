@@ -119,7 +119,6 @@ export function root (Header, ErrorScreen = _ErrorScreen) {
       }
     }
   })
-
 }
 
 export default root

@@ -1,9 +1,5 @@
 import Tree from 'baobab'
 
-/**
- * 
- * @param {Object} defaultState
- */
 export function initializeTreeMiddleware (defaultState) {
   /**
    * writes a `Baobab` tree with the default state in `res.locals.tree`
@@ -23,6 +19,6 @@ export function initializeTreeMiddleware (defaultState) {
     tree.commit()
     next()
   }
-  
+
   return actualMiddleware
 }

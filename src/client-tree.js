@@ -12,6 +12,6 @@ export function createClientTree (defaultState) {
       expires: 1
     })
   })
-  
+
   return tree
 }

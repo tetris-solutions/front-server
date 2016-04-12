@@ -9,7 +9,6 @@ global.ReactIntl = require('react-intl/lib/react-intl')
 require('react-intl/lib/locales')
 
 export function createServerRenderer (HTML, getRoutes, messages) {
-
   /**
    * reads from `res.locals` and `req` to generate the React component tree which is then sent to the client as HTML
    * @param {Object} req express request
@@ -17,7 +16,7 @@ export function createServerRenderer (HTML, getRoutes, messages) {
    * @returns {undefined}
    */
   function serverRenderRoute (req, res) {
-    location = location || req.url
+    const location = req.url
 
     const useBeautify = process.env.BEAUTIFY_HTML === 'true'
     const {tree} = res.locals

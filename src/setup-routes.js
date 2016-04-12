@@ -1,18 +1,10 @@
 import React from 'react'
-import {Router, IndexRoute, Route} from 'react-router'
-import {root} from 'baobab-react/higher-order'
+import {Router} from 'react-router'
 import {requireAuth} from './functions/require-auth'
 import {performLoadAction} from './functions/perform-load-action'
 
 const isServer = typeof window === 'undefined'
 
-/**
- * 
- * @param {Function} getRoutes
- * @param {Object} history
- * @param tree
- * @returns {*}
- */
 export function setupRoutes (getRoutes, history, tree) {
   const protectRoute = isServer ? undefined : requireAuth(tree)
   let firstRender = true
@@ -42,7 +34,7 @@ export function setupRoutes (getRoutes, history, tree) {
 
   return (
     <Router history={history}>
-        {getRoutes(protectRoute, preload)}
+      {getRoutes(protectRoute, preload)}
     </Router>
   )
 }

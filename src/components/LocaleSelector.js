@@ -15,7 +15,7 @@ export const LocaleSelector = React.createClass({
       changeLocale: PropTypes.func
     })
   },
-  getDefaultProps() {
+  getDefaultProps () {
     return {
       className: 'form-control'
     }
