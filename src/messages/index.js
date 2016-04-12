@@ -1,4 +1,7 @@
-import _en from './en'
-import _pt from './pt-BR'
+import en from './en'
+import pt from './pt-BR'
 
-export default {en: _en, 'pt-BR': _pt}
+export default {
+  en,
+  'pt-BR': pt
+}

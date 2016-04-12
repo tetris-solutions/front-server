@@ -1,5 +1,5 @@
 import React from 'react'
-import changeLocaleAction from '../actions/change-locale-action'
+import {changeLocaleAction} from '../actions/change-locale-action'
 import {branch} from 'baobab-react/higher-order'
 import window from 'global/window'
 

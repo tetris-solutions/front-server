@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOMServer from 'react-dom/server'
-import getRoutes from './../routes/ui'
+import {setupRoutes} from './setup-routes'
 import {createMemoryHistory} from 'react-router'
 import beautify from 'js-beautify'
 
@@ -8,16 +8,15 @@ global.React = React
 global.ReactIntl = require('react-intl/lib/react-intl')
 require('react-intl/lib/locales')
 
-export function serverRenderRoute (HTML, messages) {
+export function createServerRenderer (HTML, getRoutes, messages) {
 
   /**
    * reads from `res.locals` and `req` to generate the React component tree which is then sent to the client as HTML
    * @param {Object} req express request
    * @param {Object} res express response
-   * @param {String} [location] predefined location
    * @returns {undefined}
    */
-  export function serverRenderRoute (req, res, location) {
+  function serverRenderRoute (req, res) {
     location = location || req.url
 
     const useBeautify = process.env.BEAUTIFY_HTML === 'true'
@@ -31,7 +30,7 @@ export function serverRenderRoute (HTML, messages) {
     tree.commit()
 
     const history = createMemoryHistory(location)
-    const app = getRoutes(history, tree)
+    const app = setupRoutes(getRoutes, history, tree)
     const appMarkup = useBeautify
       ? ReactDOMServer.renderToStaticMarkup(app)
       : ReactDOMServer.renderToString(app)
@@ -48,6 +47,6 @@ export function serverRenderRoute (HTML, messages) {
         useBeautify ? beautify.html(markup) : markup
       ))
   }
+
+  return serverRenderRoute
 }
-
-

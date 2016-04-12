@@ -1,5 +1,4 @@
 import React from 'react'
-import MissingRequiredFieldError from '../exceptions/MissingRequiredFieldError'
 import isEmpty from 'lodash/isEmpty'
 import assign from 'lodash/assign'
 import window from 'global/window'
@@ -26,21 +25,15 @@ export default {
     }
   },
   handleSubmitException (rejection) {
-    const err = 'Response' in window && rejection instanceof window.Response ? rejection.data : rejection
-    let newErrors
+    const err = 'Response' in window && rejection instanceof window.Response
+      ? rejection.data
+      : rejection
 
-    if (err instanceof MissingRequiredFieldError) {
-      newErrors = {[err.field]: this.context.messages.missingRequiredField}
-    } else if (err.fields) {
-      newErrors = err.fields
+    if (err && !isEmpty(err.fields)) {
+      this.setState({
+        errors: assign(this.state.errors, err.fields)
+      })
     }
-
-    if (isEmpty(newErrors)) return
-
-    this.setState(({errors}) => {
-      assign(errors, newErrors)
-      return {errors}
-    })
   },
   dismissError ({target: {name}}) {
     const {errors} = this.state

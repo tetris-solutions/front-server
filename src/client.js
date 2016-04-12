@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDom from 'react-dom'
 import {createClientTree} from './client-tree'
-import getRoutes from './routes/ui'
+import {setupRoutes} from './setup-routes'
 import {GET} from '@tetris/http'
 import {browserHistory} from 'react-router'
 import loadScript from './functions/load-script'
@@ -13,7 +13,7 @@ require('whatwg-fetch')
 window.React = React
 window.moment = moment
 
-export function client (defaultState) {
+export function createClient (getRoutes, defaultState) {
   const tree = createClientTree(defaultState)
   const loadedLocales = {
     [tree.get('locale')]: tree.get('intl')
@@ -24,7 +24,9 @@ export function client (defaultState) {
       let hasRendered = false
 
       const render = () => {
-        ReactDom.render(getRoutes(browserHistory, tree), window.document.getElementById('app'))
+        ReactDom.render(setupRoutes(getRoutes, browserHistory, tree),
+          window.document.getElementById('app'))
+
         hasRendered = true
       }
 

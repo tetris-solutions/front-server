@@ -1,11 +1,5 @@
-import assign from 'lodash/assign'
-import nav from './nav'
-import exceptions from './exceptions'
-import callToAction from './callToAction'
-import successMessages from './success'
-import labels from './labels'
-import headers from './headers'
-
-export default assign({
-  greetingMessage: 'Hello world!'
-}, nav, exceptions, callToAction, successMessages, labels, headers)
+export default {
+  errorScreenHeader: 'Server Error',
+  accessForbiddenTitle: 'Access forbidden!',
+  accessForbiddenDescription: 'You don\'t have access to this page'
+}

@@ -4,7 +4,7 @@
  * @param {string} locale new locale
  * @returns {undefined}
  */
-export function changeLanguage (tree, locale) {
+export function changeLocaleAction (tree, locale) {
   tree.set('locale', locale)
 
   if (tree.get('user')) {
@@ -13,5 +13,3 @@ export function changeLanguage (tree, locale) {
 
   tree.commit()
 }
-
-export default changeLanguage

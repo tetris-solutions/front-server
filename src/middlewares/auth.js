@@ -41,4 +41,3 @@ export function authMiddleware (req, res, next) {
     }, noAuth)
 }
 
-export default authMiddleware
