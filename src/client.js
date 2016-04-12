@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDom from 'react-dom'
-import tree from './client-tree'
+import {createClientTree} from './client-tree'
 import getRoutes from './routes/ui'
 import {GET} from '@tetris/http'
 import {browserHistory} from 'react-router'
@@ -13,49 +13,52 @@ require('whatwg-fetch')
 window.React = React
 window.moment = moment
 
-const loadedLocales = {
-  [tree.get('locale')]: tree.get('intl')
-}
+export function client (defaultState) {
+  const tree = createClientTree(defaultState)
+  const loadedLocales = {
+    [tree.get('locale')]: tree.get('intl')
+  }
 
-loadScript('/js/react-intl.min.js')
-  .then(() => {
-    let hasRendered = false
+  loadScript('/js/react-intl.min.js')
+    .then(() => {
+      let hasRendered = false
 
-    const render = () => {
-      ReactDom.render(getRoutes(browserHistory, tree), window.document.getElementById('app'))
-      hasRendered = true
-    }
-
-    function loadIntl (locale) {
-      if (loadedLocales[locale]) {
-        return Promise.resolve(loadedLocales[locale])
+      const render = () => {
+        ReactDom.render(getRoutes(browserHistory, tree), window.document.getElementById('app'))
+        hasRendered = true
       }
 
-      return GET(`/intl/${locale}`).then(({data}) => data)
-    }
+      function loadIntl (locale) {
+        if (loadedLocales[locale]) {
+          return Promise.resolve(loadedLocales[locale])
+        }
 
-    /**
-     * loads a given locale and save it in application the state tree
-     * @global
-     * @param {string} locale the locale to laod
-     * @returns {Promise} return a promise that will be resolved once all resources are loaded
-     */
-    function tetrisLoadLocale (locale) {
-      const src = '/js/' + locale.split('-')[0] + '.js'
+        return GET(`/intl/${locale}`).then(({data}) => data)
+      }
 
-      return Promise.all([loadScript(src), loadIntl(locale)])
-        .then(args => {
-          const intl = args.pop()
+      /**
+       * loads a given locale and save it in application the state tree
+       * @global
+       * @param {string} locale the locale to laod
+       * @returns {Promise} return a promise that will be resolved once all resources are loaded
+       */
+      function tetrisLoadLocale (locale) {
+        const src = '/js/' + locale.split('-')[0] + '.js'
 
-          loadedLocales[locale] = intl
-          tree.set('intl', intl)
-          tree.commit()
+        return Promise.all([loadScript(src), loadIntl(locale)])
+          .then(args => {
+            const intl = args.pop()
 
-          if (!hasRendered) render()
-        })
-    }
+            loadedLocales[locale] = intl
+            tree.set('intl', intl)
+            tree.commit()
 
-    window.tetrisLoadLocale = tetrisLoadLocale
+            if (!hasRendered) render()
+          })
+      }
 
-    tetrisLoadLocale(tree.get('locale'))
-  })
+      window.tetrisLoadLocale = tetrisLoadLocale
+
+      tetrisLoadLocale(tree.get('locale'))
+    })
+}

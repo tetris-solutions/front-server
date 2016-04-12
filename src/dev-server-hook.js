@@ -12,5 +12,3 @@ export function devServerHook (webpackConfig, app) {
 
   app.use(webpackHot(compiler))
 }
-
-export default devServerHook

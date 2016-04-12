@@ -3,7 +3,7 @@ import merge from 'lodash/merge'
 import window from 'global/window'
 import Cookies from 'js-cookie'
 
-export default defaultState => {
+export function createClientTree (defaultState) {
   const tree = new Tree(merge(defaultState, window.backendPayload))
 
   tree.select('locale').on('update', ({data: {currentData}}) => {
