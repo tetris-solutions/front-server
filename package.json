@@ -1,0 +1,68 @@
+{
+  "name": "@tetris/front-server",
+  "version": "0.0.0",
+  "description": "general front server library",
+  "scripts": {
+    "prepublish": "rimraf lib && npm run build",
+    "build": "babel src -d lib",
+    "lint": "eslint src"
+  },
+  "pre-commit": [
+    "lint"
+  ],
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tetris-solutions/front-server.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tetris-solutions/front-server/issues"
+  },
+  "homepage": "https://github.com/tetris-solutions/front-server#readme",
+  "dependencies": {
+    "@tetris/debug-middleware": "0.0.1",
+    "cookie-parser": "^1.4.1",
+    "cors": "^2.7.1",
+    "express": "^4.13.4",
+    "js-beautify": "^1.6.2",
+    "moment": "^2.12.0",
+    "morgan": "^1.7.0",
+    "node-fetch": "^1.3.3",
+    "react-toastr": "^2.4.0",
+    "whatwg-fetch": "^0.11.0"
+  },
+  "peerDependencies": {
+    "@tetris/base-lib": "^0.1.0",
+    "@tetris/http": "^0.2.3",
+    "classnames": "^2.2.3",
+    "lodash": "^4.8.2",
+    "global": "^4.3.0",
+    "js-cookie": "^2.1.0",
+    "baobab": "^2.3.3",
+    "baobab-react": "^1.0.1",
+    "react": "^15.0.1",
+    "react-addons-test-utils": "^0.14.8",
+    "react-dom": "^15.0.1",
+    "react-intl": "^1.2.2",
+    "react-router": "^2.0.1",
+    "webpack": "^1.12.14",
+    "webpack-dev-middleware": "^1.5.1",
+    "webpack-hot-middleware": "^2.10.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.6.5",
+    "babel-plugin-react-transform": "^2.0.2",
+    "babel-preset-es2015": "^6.6.0",
+    "babel-preset-react": "^6.5.0",
+    "eslint": "^2.4.0",
+    "eslint-config-standard": "^5.1.0",
+    "eslint-config-standard-react": "^2.3.0",
+    "eslint-plugin-promise": "^1.1.0",
+    "eslint-plugin-react": "^4.2.3",
+    "eslint-plugin-standard": "^1.3.2",
+    "pre-commit": "^1.1.2",
+    "rimraf": "^2.5.2"
+  }
+}
