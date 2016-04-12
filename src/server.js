@@ -8,6 +8,7 @@ import {authMiddleware} from './middlewares/auth'
 import debugMiddleware from '@tetris/debug-middleware'
 import morgan from 'morgan'
 import assign from 'lodash/assign'
+import {createServerRenderer} from './create-server-renderer'
 
 global.fetch = fetch
 
@@ -20,6 +21,8 @@ const app = express()
 
 export function createServer ({
   httpLogStream,
+  getRoutes,
+  HTML,
   defaultState,
   publicPath,
   getWebpackConfig,
@@ -59,7 +62,7 @@ export function createServer ({
     })
   })
 
-  setAppRoutes(app)
+  setAppRoutes(app, createServerRenderer(HTML, getRoutes, messages))
 
   app.use(function errorHandler (_err, req, res, next) {
     // @todo logging
