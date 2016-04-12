@@ -34,7 +34,7 @@ export function setupRoutes (getRoutes, history, tree) {
 
   return (
     <Router history={history}>
-      {getRoutes(protectRoute, preload)}
+      {getRoutes(tree, protectRoute, preload)}
     </Router>
   )
 }
