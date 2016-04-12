@@ -1,3 +1,5 @@
+import window from 'global/window'
+
 /**
  * creates a react-router onEnter hook that checks if user is logged in before permitting access to a give route
  * @param {Baobab} tree state tree
@@ -11,14 +13,19 @@ export function requireAuth (tree) {
    * @returns {undefined}
    */
   function onEnter (nextState, replace) {
-    if (!tree.get('user') && !tree.get('error')) {
+    if (tree.get('user') || tree.get('error')) return
+
+    if (window.location.hostname === process.env.FRONT_HOST) {
       replace({
         pathname: '/login',
         query: {
           next: nextState.location.pathname
         }
       })
+    } else {
+      window.location.href = `${process.env.FRONT_URL}/login?next=${window.location.href}`
     }
   }
+
   return onEnter
 }

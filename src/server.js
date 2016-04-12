@@ -22,7 +22,7 @@ export function createServer ({
   httpLogStream,
   defaultState,
   publicPath,
-  webpackConfig,
+  getWebpackConfig,
   messages,
   setAppRoutes,
   port
@@ -38,7 +38,7 @@ export function createServer ({
   if (flags.developmentMode) {
     const {devServerHook} = require('./dev-server-hook')
 
-    devServerHook(webpackConfig, app)
+    devServerHook(getWebpackConfig(), app)
   }
 
   app.use(cookieParser())
