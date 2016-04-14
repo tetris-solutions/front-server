@@ -1,6 +1,6 @@
 {
   "name": "@tetris/front-server",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "general front server library",
   "scripts": {
     "prepublish": "rimraf lib && npm run build",
