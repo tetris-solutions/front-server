@@ -2,6 +2,11 @@ import React from 'react'
 import {branch} from 'baobab-react/higher-order'
 import Message from './intl/Message'
 
+function clearError (tree) {
+  tree.set('error', null)
+  tree.commit()
+}
+
 const {PropTypes} = React
 
 const ErrorScreen = React.createClass({
@@ -14,16 +19,14 @@ const ErrorScreen = React.createClass({
     error: PropTypes.shape({
       message: PropTypes.string
     }),
-    actions: PropTypes.shape({
-      clearRoute: PropTypes.func
-    }),
+    dispatch: PropTypes.func,
     debugMode: PropTypes.bool
   },
   componentDidMount () {
     this.context.router.setRouteLeaveHook(this.context.route, this.routerWillLeave)
   },
   routerWillLeave () {
-    this.props.actions.clearRoute()
+    this.props.dispatch(clearError)
   },
   render () {
     const {debugMode, error} = this.props
@@ -47,15 +50,7 @@ const ErrorScreen = React.createClass({
   }
 })
 
-export default branch(ErrorScreen, {
-  cursors: {
-    error: ['error'],
-    debugMode: ['debugMode']
-  },
-  actions: {
-    clearError (tree) {
-      tree.set('error', null)
-      tree.commit()
-    }
-  }
-})
+export default branch({
+  error: ['error'],
+  debugMode: ['debugMode']
+}, ErrorScreen)

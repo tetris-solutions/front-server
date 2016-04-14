@@ -11,6 +11,10 @@ const isServer = typeof window === 'undefined'
 const ToastMessageFactory = React.createFactory(ToastMessage.animation)
 const {PropTypes} = React
 
+function pushErrorMessage (tree, message) {
+  return Promise.resolve().then(() => tree.push('alerts', {message}))
+}
+
 export function root (Header, ErrorScreen = _ErrorScreen) {
   const Root = React.createClass({
     displayName: 'Root',
@@ -23,9 +27,7 @@ export function root (Header, ErrorScreen = _ErrorScreen) {
         locales: PropTypes.string,
         messages: PropTypes.object
       }),
-      actions: PropTypes.shape({
-        pushErrorMessage: PropTypes.func
-      }),
+      dispatch: PropTypes.func,
       location: PropTypes.object,
       params: PropTypes.object
     },
@@ -81,8 +83,7 @@ export function root (Header, ErrorScreen = _ErrorScreen) {
         pathname: pathname
       }
 
-      this.props.actions
-        .pushErrorMessage(window.atob(redirectError))
+      this.props.dispatch(pushErrorMessage, window.atob(redirectError))
         .then(() => this.context.router.push(location))
     },
     componentDidUpdate () {
@@ -105,20 +106,12 @@ export function root (Header, ErrorScreen = _ErrorScreen) {
     }
   })
 
-  return branch(Root, {
-    cursors: {
-      user: ['user'],
-      intl: ['intl'],
-      alerts: ['alerts'],
-      error: ['error']
-    },
-    actions: {
-      pushErrorMessage (tree, message) {
-        return Promise.resolve()
-          .then(() => tree.push('alerts', {message}))
-      }
-    }
-  })
+  return branch({
+    user: ['user'],
+    intl: ['intl'],
+    alerts: ['alerts'],
+    error: ['error']
+  }, Root)
 }
 
 export default root

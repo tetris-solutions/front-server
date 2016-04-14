@@ -11,9 +11,7 @@ export const LocaleSelector = React.createClass({
     className: PropTypes.string,
     userLocale: PropTypes.string,
     locale: PropTypes.string,
-    actions: PropTypes.shape({
-      changeLocale: PropTypes.func
-    })
+    dispatch: PropTypes.func
   },
   getDefaultProps () {
     return {
@@ -21,7 +19,7 @@ export const LocaleSelector = React.createClass({
     }
   },
   onChangeLocale ({target: {value}}) {
-    this.props.actions.changeLocale(value)
+    this.props.dispatch(changeLocaleAction, value)
     window.tetrisLoadLocale(value)
   },
   render () {
@@ -40,12 +38,7 @@ export const LocaleSelector = React.createClass({
   }
 })
 
-export default branch(LocaleSelector, {
-  cursors: {
-    userLocale: ['user', 'locale'],
-    locale: ['locale']
-  },
-  actions: {
-    changeLocale: changeLocaleAction
-  }
-})
+export default branch({
+  userLocale: ['user', 'locale'],
+  locale: ['locale']
+}, LocaleSelector)
