@@ -7,11 +7,10 @@ import {pushResponseErrorToState} from '@tetris/front-server/lib/functions/push-
  * loads a list of user companies and saving it into the passed tree as `tree.user.companies`
  * @param {Baobab} tree state tree
  * @param {String} [token] auth token
- * @param {String} [app] filter permissions from this app
  * @returns {Promise} promise that resolves once action is complete
  */
-export function loadUserCompaniesAction (tree, token, app = null) {
-  return loadUserCompanies(getApiFetchConfig(tree, token))
+export function loadUserCompaniesAction (tree, token) {
+  return loadUserCompanies(getApiFetchConfig(tree, token), tree.get('app'))
     .then(saveResponseTokenAsCookie)
     .then(response => {
       tree.set(['user', 'companies'], response.data)
@@ -24,11 +23,10 @@ export function loadUserCompaniesAction (tree, token, app = null) {
  * adaptor to call `loadUserCompaniesAction` on the server side
  * @param {Object} req express request
  * @param {Object} res express response
- * @param {String} [app] filter permissions from this app
  * @returns {Promise} action promise
  */
-export function loadUserCompaniesActionServerAdaptor (req, res, app = null) {
-  return loadUserCompaniesAction(res.locals.tree, req.authToken, app)
+export function loadUserCompaniesActionServerAdaptor (req, res) {
+  return loadUserCompaniesAction(res.locals.tree, req.authToken)
 }
 
 /**
