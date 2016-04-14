@@ -22,7 +22,6 @@ export function root (Header, ErrorScreen = _ErrorScreen) {
       children: PropTypes.node,
       alerts: PropTypes.array,
       error: PropTypes.object,
-      user: PropTypes.object,
       intl: PropTypes.shape({
         locales: PropTypes.string,
         messages: PropTypes.object
@@ -90,9 +89,9 @@ export function root (Header, ErrorScreen = _ErrorScreen) {
       this.addAlerts()
     },
     render () {
-      const {user, children, error} = this.props
+      const {children, error} = this.props
       return <div>
-        <Header user={user}/>
+        <Header />
         {error ? (
           <ErrorScreen />
         ) : children}
@@ -107,7 +106,6 @@ export function root (Header, ErrorScreen = _ErrorScreen) {
   })
 
   return branch({
-    user: ['user'],
     intl: ['intl'],
     alerts: ['alerts'],
     error: ['error']

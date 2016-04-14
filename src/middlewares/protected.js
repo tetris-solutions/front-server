@@ -7,7 +7,11 @@
  */
 export function protectedRouteMiddleware (req, res, next) {
   if (!req.user && !res.locals.tree.get('error')) {
-    res.redirect(`${process.env.FRONT_URL}/login?next=${req.url}`)
+    const next = req.hostname === process.env.FRONT_HOST
+      ? req.url
+      : `${req.protocol}://${req.hostname}${req.url}`
+
+    res.redirect(`${process.env.FRONT_URL}/login?next=${next}`)
   } else {
     next()
   }
