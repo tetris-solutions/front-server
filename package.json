@@ -2,6 +2,11 @@
   "name": "@tetris/front-server",
   "version": "0.0.13",
   "description": "general front server library",
+  "engineStrict": true,
+  "engines": {
+    "npm": ">=3.0.0",
+    "node": ">=4.0.0"
+  },
   "scripts": {
     "prepublish": "rimraf lib && npm run build",
     "build": "babel src -d lib",
