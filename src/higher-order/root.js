@@ -15,7 +15,7 @@ function pushErrorMessage (tree, message) {
   return Promise.resolve().then(() => tree.push('alerts', {message}))
 }
 
-export function root (Header, ErrorScreen = _ErrorScreen) {
+export function root (Header = null, ErrorScreen = _ErrorScreen) {
   const Root = React.createClass({
     displayName: 'Root',
     propTypes: {
@@ -91,7 +91,7 @@ export function root (Header, ErrorScreen = _ErrorScreen) {
     render () {
       const {children, error} = this.props
       return <div>
-        <Header />
+        {Header ? <Header /> : null}
         {error ? (
           <ErrorScreen />
         ) : children}

@@ -1,7 +1,7 @@
 import React from 'react'
 import {Router} from 'react-router'
 import {requireAuth} from './functions/require-auth'
-import {performLoadAction} from './functions/perform-load-action'
+import {performLoadActions} from './functions/perform-load-actions'
 
 const isServer = typeof window === 'undefined'
 
@@ -15,10 +15,10 @@ export function setupRoutes (getRoutes, history, tree) {
     }, 0)
   }
 
-  function preload (action) {
+  function preload (...actions) {
     if (isServer) return
 
-    const hook = performLoadAction(tree, action)
+    const hook = performLoadActions(tree, actions)
 
     function onEnter (nextState, replace, callback) {
       // if this is the very first render, we can rely on the data injected by the server
