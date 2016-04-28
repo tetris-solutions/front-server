@@ -3,6 +3,8 @@ import ReactDOMServer from 'react-dom/server'
 import {setupRoutes} from './setup-routes'
 import {createMemoryHistory} from 'react-router'
 import beautify from 'js-beautify'
+import includes from 'lodash/includes'
+import getCss from 'csjs/get-css'
 
 global.React = React
 global.ReactIntl = require('react-intl/lib/react-intl')
@@ -28,14 +30,24 @@ export function createServerRenderer (HTML, getRoutes, messages) {
     })
     tree.commit()
 
+    const styles = []
+
+    function insertCss (style) {
+      if (!includes(styles, style)) {
+        styles.push(style)
+      }
+    }
+
     const history = createMemoryHistory(location)
-    const app = setupRoutes(getRoutes, history, tree)
+    const app = setupRoutes(getRoutes, history, tree, insertCss)
     const appMarkup = useBeautify
       ? ReactDOMServer.renderToStaticMarkup(app)
       : ReactDOMServer.renderToString(app)
 
+    const css = styles.map(style => getCss(style)).join('\n')
+
     const markup = ReactDOMServer.renderToStaticMarkup(
-      <HTML payload={tree.get()}>
+      <HTML payload={tree.get()} css={css}>
       {appMarkup}
       </HTML>
     )

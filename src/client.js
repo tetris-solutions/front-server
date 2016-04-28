@@ -7,11 +7,29 @@ import {browserHistory} from 'react-router'
 import loadScript from './functions/load-script'
 import window from 'global/window'
 import moment from 'moment'
+import getCss from 'csjs/get-css'
+import includes from 'lodash/includes'
 
 require('whatwg-fetch')
 
 window.React = React
 window.moment = moment
+
+const styles = []
+let $style
+
+function insertCss (style) {
+  if (!includes(styles, style)) {
+    styles.push(style)
+
+    if (!$style) {
+      $style = window.document.getElementById('style-injection')
+      $style.innerHTML = ''
+    }
+
+    $style.innerHTML += '\n' + getCss(style)
+  }
+}
 
 export function createClient (getRoutes, defaultState) {
   const tree = createClientTree(defaultState)
@@ -24,7 +42,7 @@ export function createClient (getRoutes, defaultState) {
       let hasRendered = false
 
       const render = () => {
-        ReactDom.render(setupRoutes(getRoutes, browserHistory, tree),
+        ReactDom.render(setupRoutes(getRoutes, browserHistory, tree, insertCss),
           window.document.getElementById('app'))
 
         hasRendered = true
@@ -55,7 +73,9 @@ export function createClient (getRoutes, defaultState) {
             tree.set('intl', intl)
             tree.commit()
 
-            if (!hasRendered) render()
+            if (!hasRendered) {
+              render()
+            }
           })
       }
 
