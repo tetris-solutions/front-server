@@ -35,7 +35,7 @@ export function root (insertCss) {
         router: PropTypes.object
       },
       childContextTypes: {
-        css: PropTypes.func,
+        insertCss: PropTypes.func,
         locales: PropTypes.string,
         messages: PropTypes.object,
         location: PropTypes.object,
