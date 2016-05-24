@@ -13,12 +13,11 @@ import includes from 'lodash/includes'
 require('whatwg-fetch')
 
 window.React = React
+window.moment = moment
 
 if (process.env.NODE_ENV !== 'production') {
-  require('why-did-you-update').whyDidYouUpdate(React)
+  window.whyTho = () => require('why-did-you-update').whyDidYouUpdate(React)
 }
-
-window.moment = moment
 
 const styles = []
 let $style
