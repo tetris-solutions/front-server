@@ -1,6 +1,6 @@
 {
   "name": "@tetris/front-server",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "general front server library",
   "engineStrict": true,
   "engines": {
