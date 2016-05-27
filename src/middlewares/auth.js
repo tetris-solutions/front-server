@@ -35,6 +35,7 @@ export function authMiddleware (req, res, next) {
 
       if (req.user && req.user.locale) {
         req.locale = req.user.locale
+        res.locals.tree.set('locale', req.locale)
       } else {
         req.user.locale = req.locale
       }
