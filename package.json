@@ -28,7 +28,7 @@
   "homepage": "https://github.com/tetris-solutions/front-server#readme",
   "dependencies": {
     "@tetris/debug-middleware": "^0.1.0",
-    "@tetris/locale-middleware": "0.0.2",
+    "@tetris/locale-middleware": "^0.1.0",
     "cookie-parser": "^1.4.1",
     "cors": "^2.7.1",
     "express": "^4.13.4",
