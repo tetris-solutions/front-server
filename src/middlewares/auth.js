@@ -33,7 +33,9 @@ export function authMiddleware (req, res, next) {
       req.authToken = token
       req.user = response.data
 
-      if (req.locale && !req.user.locale) {
+      if (req.user && req.user.locale) {
+        req.locale = req.user.locale
+      } else {
         req.user.locale = req.locale
       }
 
