@@ -1,7 +1,6 @@
 import React from 'react'
 import {changeLocaleAction} from '../actions/change-locale-action'
 import {branch} from 'baobab-react/dist-modules/higher-order'
-import window from 'global/window'
 
 const {PropTypes} = React
 
@@ -20,7 +19,6 @@ export const LocaleSelector = React.createClass({
   },
   onChangeLocale ({target: {value}}) {
     this.props.dispatch(changeLocaleAction, value)
-    window.tetrisLoadLocale(value)
   },
   render () {
     return (

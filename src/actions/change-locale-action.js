@@ -6,10 +6,5 @@
  */
 export function changeLocaleAction (tree, locale) {
   tree.set('locale', locale)
-
-  if (tree.get('user')) {
-    tree.set(['user', 'locale'], locale)
-  }
-
   tree.commit()
 }

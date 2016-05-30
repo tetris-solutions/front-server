@@ -9,6 +9,7 @@ import window from 'global/window'
 import moment from 'moment'
 import getCss from 'csjs/get-css'
 import includes from 'lodash/includes'
+import {updateUserLocaleAction} from './actions/update-user-locale-action'
 
 require('whatwg-fetch')
 
@@ -62,11 +63,10 @@ export function createClient (getRoutes, defaultState) {
 
       /**
        * loads a given locale and save it in application the state tree
-       * @global
        * @param {string} locale the locale to laod
        * @returns {Promise} return a promise that will be resolved once all resources are loaded
        */
-      function tetrisLoadLocale (locale) {
+      function loadLocale (locale) {
         const src = '/js/' + locale.split('-')[0] + '.js'
 
         return Promise.all([loadScript(src), loadIntl(locale)])
@@ -83,8 +83,25 @@ export function createClient (getRoutes, defaultState) {
           })
       }
 
-      window.tetrisLoadLocale = tetrisLoadLocale
+      function changeLocale (locale) {
+        loadLocale(locale)
 
-      tetrisLoadLocale(tree.get('locale'))
+        if (tree.get('user')) {
+          tree.set(['user', 'locale'], locale)
+          tree.commit()
+
+          updateUserLocaleAction(tree, locale)
+        }
+      }
+
+      const localeCursor = tree.select('locale')
+
+      localeCursor.on('update', ({data: {currentData}}) => {
+        if (currentData) {
+          changeLocale(currentData)
+        }
+      })
+
+      loadLocale(localeCursor.get())
     })
 }
