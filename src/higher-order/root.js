@@ -29,7 +29,8 @@ export function root (insertCss) {
         }),
         dispatch: PropTypes.func,
         location: PropTypes.object,
-        params: PropTypes.object
+        params: PropTypes.object,
+        routes: PropTypes.array
       },
       contextTypes: {
         router: PropTypes.object
@@ -40,16 +41,18 @@ export function root (insertCss) {
         messages: PropTypes.object,
         location: PropTypes.object,
         params: PropTypes.object,
-        moment: PropTypes.func
+        moment: PropTypes.func,
+        routes: PropTypes.array
       },
       getChildContext () {
-        const {location, params, intl: {locales, messages}} = this.props
+        const {routes, location, params, intl: {locales, messages}} = this.props
         return {
           insertCss,
           locales,
           messages,
           location,
           params,
+          routes,
           moment () {
             const m = _moment(...arguments)
             m.locale(locales)
