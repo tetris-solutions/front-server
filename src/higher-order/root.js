@@ -1,5 +1,5 @@
 import React from 'react'
-import {branch} from 'baobab-react/dist-modules/higher-order'
+import {branch} from 'baobab-react/higher-order'
 import {ToastContainer, ToastMessage} from 'react-toastr'
 import _moment from 'moment'
 import window from 'global/window'

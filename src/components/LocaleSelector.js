@@ -1,6 +1,6 @@
 import React from 'react'
 import {changeLocaleAction} from '../actions/change-locale-action'
-import {branch} from 'baobab-react/dist-modules/higher-order'
+import {branch} from 'baobab-react/higher-order'
 
 const {PropTypes} = React
 
