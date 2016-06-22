@@ -24,7 +24,12 @@ export default {
       errors: {}
     }
   },
+  componentWillUnmount () {
+    this.dead = true
+  },
   handleSubmitException (rejection) {
+    if (this.dead) return
+
     const err = 'Response' in window && rejection instanceof window.Response
       ? rejection.data
       : rejection
@@ -48,6 +53,8 @@ export default {
     this.setState({errors: {}, submitInProgress: true})
   },
   posSubmit () {
+    if (this.dead) return
+
     this.setState({submitInProgress: false})
   }
 }
