@@ -9,7 +9,7 @@ import debugMiddleware from '@tetris/debug-middleware'
 import morgan from 'morgan'
 import assign from 'lodash/assign'
 import {createServerRenderer} from './create-server-renderer'
-import {readMessageFile} from './functions/read-messages-file'
+import {syncMessages} from './functions/sync-messages'
 
 global.fetch = fetch
 
@@ -38,7 +38,6 @@ export function createServer ({
     ? 'combined'
     : 'short'
 
-  messages = messages || require(messagesFile)
   app.use(morgan(morganMode, {stream: httpLogStream}))
 
   if (flags.developmentMode) {
@@ -50,10 +49,13 @@ export function createServer ({
   app.use(cookieParser())
   app.use(debugMiddleware)
 
-  app.use(flags.developmentMode && messagesFile
-    ? (...args) => createLocaleMiddleware(readMessageFile(messagesFile))(...args)
-    : createLocaleMiddleware(messages))
+  if (messagesFile) {
+    messages = flags.developmentMode
+      ? syncMessages(messagesFile)
+      : require(messagesFile)
+  }
 
+  app.use(createLocaleMiddleware(messages))
   app.use(initializeTreeMiddleware(defaultState))
   app.use(authMiddleware)
 
@@ -65,7 +67,7 @@ export function createServer ({
 
     res.json({
       locales: locale,
-      messages: assign({}, messages[locale], globalMessages[locale])
+      messages: assign({}, globalMessages[locale], messages[locale])
     })
   })
 
