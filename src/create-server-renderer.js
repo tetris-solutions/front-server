@@ -26,7 +26,7 @@ export function createServerRenderer (HTML, getRoutes, messages) {
     tree.set('locale', req.locale)
     tree.set('intl', {
       locales: req.locale,
-      messages: messages[req.locale]
+      messages: messages[req.locale] || messages.en
     })
     tree.commit()
 

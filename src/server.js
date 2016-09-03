@@ -10,6 +10,7 @@ import morgan from 'morgan'
 import assign from 'lodash/assign'
 import {createServerRenderer} from './create-server-renderer'
 import {syncMessages} from './functions/sync-messages'
+import merge from 'lodash/merge'
 
 global.fetch = fetch
 
@@ -51,8 +52,8 @@ export function createServer ({
 
   if (messagesFile) {
     messages = flags.developmentMode
-      ? syncMessages(messagesFile)
-      : require(messagesFile)
+      ? syncMessages(messagesFile, globalMessages)
+      : merge({}, globalMessages, require(messagesFile))
   }
 
   app.use(createLocaleMiddleware(messages))

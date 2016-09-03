@@ -1,10 +1,11 @@
 import {execFileSync} from 'child_process'
 import path from 'path'
 import keys from 'lodash/keys'
+import assign from 'lodash/assign'
 
 const reader = path.resolve(__dirname, '..', 'print-messages-file.js')
 
-export function syncMessages (messageFile) {
+export function syncMessages (messageFile, globalMessages) {
   function getMessages () {
     return JSON.parse(execFileSync(reader, [messageFile], {
       encoding: 'utf8'
@@ -17,7 +18,7 @@ export function syncMessages (messageFile) {
   langs.forEach(lang => {
     Object.defineProperty(dynamicMessagesObject, lang, {
       get () {
-        return getMessages()[lang]
+        return assign({}, getMessages()[lang], globalMessages[lang])
       }
     })
   })
