@@ -5,9 +5,7 @@ import _moment from 'moment'
 import window from 'global/window'
 import get from 'lodash/get'
 import omit from 'lodash/omit'
-import last from 'lodash/last'
-import _ErrorScreen from '../ErrorScreen'
-import {forgetError} from '../../actions/forget-error-action'
+import DefaultErrorScreen from '../ErrorScreen'
 
 const isServer = typeof window === 'undefined'
 const ToastMessageFactory = React.createFactory(ToastMessage.animation)
@@ -18,25 +16,7 @@ function pushErrorMessage (tree, message) {
 }
 
 export function root (insertCss) {
-  return function createRoot (Header = null, ErrorScreen = _ErrorScreen) {
-    const WrapError = React.createClass({
-      displayName: 'Wrap-Error',
-      propTypes: {
-        dispatch: PropTypes.func.isRequired,
-        route: PropTypes.object.isRequired,
-        router: PropTypes.object.isRequired
-      },
-      componentDidMount () {
-        const {router, route, dispatch} = this.props
-
-        router.setRouteLeaveHook(route, () => {
-          dispatch(forgetError)
-        })
-      },
-      render () {
-        return <ErrorScreen/>
-      }
-    })
+  return function createRoot (Header = null, ErrorScreen = DefaultErrorScreen) {
     const Root = React.createClass({
       displayName: 'Root',
       propTypes: {
@@ -115,18 +95,12 @@ export function root (insertCss) {
         this.addAlerts()
       },
       render () {
-        const {router} = this.context
-        const {children, error, routes, dispatch} = this.props
+        const {children, error} = this.props
 
         return <div>
-          {Header ? <Header /> : null}
 
-          {error ? (
-            <WrapError
-              router={router}
-              dispatch={dispatch}
-              route={last(routes)}/>
-          ) : children}
+          {Header ? <Header /> : null}
+          {error ? <ErrorScreen /> : children}
 
           {!isServer && (
             <ToastContainer
