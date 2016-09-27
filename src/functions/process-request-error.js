@@ -4,5 +4,5 @@ export function processRequestError (response, req, res) {
   const err = getErrorFromResponse(response)
   res.locals.tree.set('error', err)
   res.locals.tree.commit()
-  res.status(500)
+  res.status(err.status || 500)
 }

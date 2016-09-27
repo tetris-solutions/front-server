@@ -20,12 +20,19 @@ export function performLoadActions (tree, actions) {
       promise = promise.then(() => action(nextState, tree))
     })
 
-    promise.then(() => callback(),
-      err => {
+    promise.then(() => callback(), err => {
+      if (err.status === 401) {
+        const nextUrl = window.location.origin +
+          nextState.location.pathname
+
+        window.location.href = `${process.env.FRONT_URL}/login?next=${nextUrl}`
+      } else {
         tree.set('error', getErrorFromResponse(err))
         tree.commit()
+
         callback(err)
-      })
+      }
+    })
   }
 
   return onEnter
