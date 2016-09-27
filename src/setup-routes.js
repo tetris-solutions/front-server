@@ -5,6 +5,12 @@ import {performLoadActions} from './functions/perform-load-actions'
 
 const isServer = typeof window === 'undefined'
 
+function onError (err) {
+  /* eslint-disable no-console */
+  console.error(err)
+  /* eslint-enable no-console */
+}
+
 export function setupRoutes (getRoutes, history, tree, insertCss) {
   const protectRoute = isServer ? undefined : requireAuth(tree)
   let firstRender = true
@@ -32,10 +38,10 @@ export function setupRoutes (getRoutes, history, tree, insertCss) {
 
   // @todo `protectedRoute` should receive a second argument `permission` or maybe create a new function `checkPermission`
 
-  const createRoot = require('./higher-order/root').root(insertCss)
+  const createRoot = require('./components/higher-order/root').root(insertCss)
 
   return (
-    <Router history={history}>
+    <Router history={history} onError={onError}>
       {getRoutes(tree, protectRoute, preload, createRoot)}
     </Router>
   )

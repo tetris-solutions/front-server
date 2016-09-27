@@ -30,7 +30,7 @@ export function performLoadActions (tree, actions) {
         tree.set('error', getErrorFromResponse(err))
         tree.commit()
 
-        callback(err)
+        callback()
       }
     })
   }
