@@ -1,6 +1,6 @@
 import React from 'react'
 import {branch} from 'baobab-react/higher-order'
-import Message from './intl/Message'
+import Message from './Message'
 
 function clearError (tree) {
   tree.set('error', null)
