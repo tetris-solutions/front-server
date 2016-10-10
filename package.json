@@ -20,7 +20,8 @@
     "Message.js",
     "actions.js",
     "client.js",
-    "server.js"
+    "server.js",
+    "utils.js"
   ],
   "repository": {
     "type": "git",
