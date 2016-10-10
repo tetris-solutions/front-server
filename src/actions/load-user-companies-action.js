@@ -1,7 +1,21 @@
-import {loadUserCompanies} from '../api/load-user-companies'
-import {saveResponseTokenAsCookie} from '@tetris/front-server/lib/functions/save-token-as-cookie'
-import {getApiFetchConfig} from '@tetris/front-server/lib/functions/get-api-fetch-config'
-import {pushResponseErrorToState} from '@tetris/front-server/lib/functions/push-response-error-to-state'
+import {saveResponseTokenAsCookie} from '../functions/save-token-as-cookie'
+import {getApiFetchConfig} from '../functions/get-api-fetch-config'
+import {pushResponseErrorToState} from '../functions/push-response-error-to-state'
+import {GET} from '@tetris/http'
+
+/**
+ * loads list of companies users is associated to
+ * @param {Object} config fetch config
+ * @param {String} [app] filter permissions from this app
+ * @returns {Promise.<Array>} promise that resolves to a list of companies
+ */
+function loadUserCompanies (config, app = null) {
+  let url = `${process.env.USER_API_URL}/user/companies`
+
+  if (app) url += `/${app}`
+
+  return GET(url, config)
+}
 
 /**
  * loads a list of user companies and saving it into the passed tree as `tree.user.companies`
@@ -38,5 +52,3 @@ export function loadUserCompaniesActionServerAdaptor (req, res) {
 export function loadUserCompaniesActionRouterAdaptor (state, tree) {
   return loadUserCompaniesAction(tree)
 }
-
-export default loadUserCompaniesAction

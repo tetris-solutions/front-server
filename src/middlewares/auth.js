@@ -1,6 +1,13 @@
-import {getUserByToken} from '../api/get-user-by-token'
+import {GET} from '@tetris/http'
 import {passTokenAhead} from '../functions/pass-token-ahead'
 import {processRequestError} from '../functions/process-request-error'
+
+function getUserByToken (token) {
+  return GET(`${process.env.USER_API_URL}`, {
+    headers: {Authorization: `Bearer ${token}`}
+  })
+}
+
 /**
  * express middleware that reads token from Authorization header and cookies, setting req.user
  * @param {Object} req express request

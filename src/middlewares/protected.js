@@ -16,5 +16,3 @@ export function protectedRouteMiddleware (req, res, next) {
     next()
   }
 }
-
-export default protectedRouteMiddleware

@@ -19,4 +19,3 @@ export function logoutAction (tree) {
   tree.commit()
 }
 
-export default logoutAction

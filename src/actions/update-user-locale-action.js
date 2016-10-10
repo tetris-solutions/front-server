@@ -1,7 +1,13 @@
-import {updateUserLocale} from '../api/update-user-locale'
-import {saveResponseTokenAsCookie} from '@tetris/front-server/lib/functions/save-token-as-cookie'
-import {getApiFetchConfig} from '@tetris/front-server/lib/functions/get-api-fetch-config'
-import {pushResponseErrorToState} from '@tetris/front-server/lib/functions/push-response-error-to-state'
+import {saveResponseTokenAsCookie} from '../functions/save-token-as-cookie'
+import {getApiFetchConfig} from '../functions/get-api-fetch-config'
+import {pushResponseErrorToState} from '../functions/push-response-error-to-state'
+import {PUT} from '@tetris/http'
+import assign from 'lodash/assign'
+
+function updateUserLocale (locale, config) {
+  return PUT(`${process.env.USER_API_URL}/user/locale`,
+    assign({}, config, {body: {locale}}))
+}
 
 /**
  * persists the change to the user locale
@@ -14,5 +20,3 @@ export function updateUserLocaleAction (tree, locale) {
     .then(saveResponseTokenAsCookie)
     .catch(pushResponseErrorToState(tree))
 }
-
-export default updateUserLocaleAction

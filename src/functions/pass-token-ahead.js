@@ -26,5 +26,3 @@ export function passTokenAhead (req, res) {
     return fetchResponse
   }
 }
-
-export default passTokenAhead

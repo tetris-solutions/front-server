@@ -41,4 +41,3 @@ export function loadScript (src) {
   return onTheFly[src]
 }
 
-export default loadScript

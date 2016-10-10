@@ -30,5 +30,3 @@ export function getApiFetchConfig (tree, token) {
 
   return config
 }
-
-export default getApiFetchConfig

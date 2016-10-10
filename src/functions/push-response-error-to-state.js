@@ -23,5 +23,3 @@ export function pushResponseErrorToState (tree) {
 
   return catchError
 }
-
-export default pushResponseErrorToState

@@ -15,6 +15,11 @@ function pushErrorMessage (tree, message) {
   return Promise.resolve().then(() => tree.push('alerts', {message}))
 }
 
+/**
+ *
+ * @param {Function} insertCss function for inserting a new stylesheet
+ * @return {Function} createRoot createRoot hook
+ */
 export function root (insertCss) {
   return function createRoot (Header = null, ErrorScreen = DefaultErrorScreen) {
     const Root = React.createClass({
@@ -118,5 +123,3 @@ export function root (insertCss) {
     }, Root)
   }
 }
-
-export default root

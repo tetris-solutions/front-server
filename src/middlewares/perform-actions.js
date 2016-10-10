@@ -29,4 +29,3 @@ export function performActionsMiddleware (...actions) {
   return resolveActions
 }
 
-export default performActionsMiddleware

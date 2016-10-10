@@ -16,7 +16,11 @@
     "lint"
   ],
   "files": [
-    "lib"
+    "lib",
+    "Message.js",
+    "actions.js",
+    "client.js",
+    "server.js"
   ],
   "repository": {
     "type": "git",
