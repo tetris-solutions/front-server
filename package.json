@@ -1,5 +1,5 @@
 {
-  "name": "@tetris/front-server",
+  "name": "tetris-iso",
   "version": "0.2.0",
   "description": "general front server library",
   "engineStrict": true,
