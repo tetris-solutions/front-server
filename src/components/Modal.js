@@ -104,7 +104,10 @@ function createPortal (contextAttributes) {
   const wrapper = document.createElement('div')
 
   document.body.style.overflow = 'hidden'
+
+  // @todo remove dependency from animated
   wrapper.className = `animated fadeIn ${style.wrapper}`
+
   document.body.appendChild(wrapper)
 
   return React.createClass({
