@@ -18,10 +18,13 @@
   "files": [
     "lib",
     "Message.js",
+    "Modal.js",
+    "Tooltip.js",
     "actions.js",
     "client.js",
     "server.js",
-    "utils.js"
+    "utils.js",
+    "base-context.js"
   ],
   "repository": {
     "type": "git",
