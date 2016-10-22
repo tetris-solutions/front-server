@@ -70,7 +70,7 @@ function createPortal (contextAttributes) {
     })
 
     modalClassCfg = {
-      displayName: `Modal(${contextAttributes.join(', ')})`,
+      displayName: 'Modal',
       childContextTypes: contextTypes,
       getChildContext () {
         return pick(this.props, contextAttributes)
