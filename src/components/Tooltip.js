@@ -11,6 +11,7 @@ import isString from 'lodash/isString'
 import isFunction from 'lodash/isFunction'
 import {required as baseContext} from '../../base-context'
 
+const stopPropagation = e => e.stopPropagation()
 const px = n => `${n}px`
 const {render, unmountComponentAtNode, findDOMNode} = ReactDOM
 const style = csjs`
@@ -49,7 +50,6 @@ function createPortal (contextAttributes) {
     })
 
     contextInjectorComponentConfig = {
-      displayName: 'Tooltip',
       childContextTypes: contextTypes,
       getChildContext () {
         return pick(this.props, contextAttributes)
@@ -57,10 +57,11 @@ function createPortal (contextAttributes) {
     }
   }
 
-  const Dialog = React.createClass(assign({
-    displayName: 'Modal',
+  const DetachedTooltip = React.createClass(assign({
+    displayName: 'Tooltip',
     propTypes: {
-      children: PropTypes.node.isRequired
+      children: PropTypes.node.isRequired,
+      hide: PropTypes.func.isRequired
     },
     render () {
       const {children, hide} = this.props
@@ -73,6 +74,10 @@ function createPortal (contextAttributes) {
         return children({hide})
       }
 
+      if (React.Children.count(children) > 1) {
+        return <div>{children}</div>
+      }
+
       return children
     }
   }, contextInjectorComponentConfig))
@@ -82,8 +87,9 @@ function createPortal (contextAttributes) {
     contextTypes,
     propTypes: {
       hover: PropTypes.bool,
-      onMouseEnter: PropTypes.func,
-      onMouseLeave: PropTypes.func,
+      hide: PropTypes.func.isRequired,
+      onMouseEnter: PropTypes.func.isRequired,
+      onMouseLeave: PropTypes.func.isRequired,
       className: PropTypes.string,
       right: PropTypes.number,
       left: PropTypes.number,
@@ -107,6 +113,8 @@ function createPortal (contextAttributes) {
         wrapper.className += ' ' + this.props.className
       }
 
+      wrapper.addEventListener('click', stopPropagation)
+      document.addEventListener('click', this.props.hide)
       document.body.appendChild(wrapper)
 
       this.renderTooltip()
@@ -116,6 +124,7 @@ function createPortal (contextAttributes) {
     },
     componentWillUnmount () {
       unmountComponentAtNode(this.wrapper)
+      document.removeEventListener('click', this.props.hide)
       document.body.removeChild(this.wrapper)
     },
     renderTooltip () {
@@ -123,9 +132,9 @@ function createPortal (contextAttributes) {
       this.wrapper.style.top = px(this.props.bottom + 5)
 
       render((
-        <Dialog {...this.context}>
+        <DetachedTooltip {...this.context} hide={this.props.hide}>
           {this.props.children}
-        </Dialog>
+        </DetachedTooltip>
       ), this.wrapper)
     },
     render () {
@@ -166,7 +175,7 @@ const Tooltip = React.createClass({
   },
   updateParentClass () {
     if (this.state.visible) {
-      this.parent.dataset.active = true
+      this.parent.dataset.active = ''
     } else {
       delete this.parent.dataset.active
     }
