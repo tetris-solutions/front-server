@@ -186,13 +186,19 @@ const Tooltip = React.createClass({
     }
   },
   show () {
+    this.updateRect()
     this.setState({visible: true}, this.updateParentClass)
   },
   hide () {
+    this.updateRect()
     this.setState({visible: false}, this.updateParentClass)
   },
   toggle () {
-    this.setState({visible: !this.state.visible}, this.updateParentClass)
+    if (this.state.visible) {
+      this.hide()
+    } else {
+      this.show()
+    }
   },
   updateParentClass () {
     if (this.state.visible) {
