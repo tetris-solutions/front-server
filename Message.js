@@ -1,5 +1,1 @@
-Object.defineProperty(exports, "__esModule", {
-  value: true
-})
-
-exports.default = require('./lib/components/Message').default
+module.exports = require('./lib/components/Message')

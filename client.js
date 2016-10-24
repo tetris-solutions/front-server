@@ -1,1 +1,1 @@
-exports.createClient = require('./lib/client').createClient
+module.exports = require('./lib/client')

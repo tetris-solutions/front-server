@@ -1,5 +1,1 @@
-Object.defineProperty(exports, "__esModule", {
-  value: true
-})
-
-exports.default = require('./lib/components/Tooltip').default
+module.exports = require('./lib/components/Tooltip')
