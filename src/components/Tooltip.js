@@ -156,13 +156,20 @@ const Tooltip = React.createClass({
     }
   },
   show () {
-    this.setState({visible: true})
+    this.setState({visible: true}, this.updateParentClass)
   },
   hide () {
-    this.setState({visible: false})
+    this.setState({visible: false}, this.updateParentClass)
   },
   toggle () {
-    this.setState({visible: !this.state.visible})
+    this.setState({visible: !this.state.visible}, this.updateParentClass)
+  },
+  updateParentClass () {
+    if (this.state.visible) {
+      this.parent.dataset.active = true
+    } else {
+      delete this.parent.dataset.active
+    }
   },
   onMouseEnter ({target}) {
     clearTimeout(this.willHide)
