@@ -10,8 +10,9 @@ import concat from 'lodash/concat'
 import isString from 'lodash/isString'
 import isFunction from 'lodash/isFunction'
 import {required as baseContext} from '../../base-context'
+import {style as modalStyle} from './Modal'
 
-const stopPropagation = e => e.stopPropagation()
+const modalClass = modalStyle.modal.toString().split(' ')[0]
 const px = n => `${n}px`
 const {render, unmountComponentAtNode, findDOMNode} = ReactDOM
 const style = csjs`
@@ -21,7 +22,7 @@ const style = csjs`
 .tooltip {
   display: block;
   position: absolute;
-  z-index: 9999;
+  z-index: 6;
   background: white;
   margin: 0;
   padding: 0;
@@ -85,6 +86,7 @@ function createPortal (contextAttributes) {
   return React.createClass({
     displayName: 'Portal',
     contextTypes,
+    id: 'tooltip-' + Math.random().toString(36).substr(2),
     propTypes: {
       hover: PropTypes.bool,
       hide: PropTypes.func.isRequired,
@@ -101,6 +103,8 @@ function createPortal (contextAttributes) {
     },
     componentDidMount () {
       const wrapper = document.createElement('div')
+
+      wrapper.id = this.id
       wrapper.className = String(style.tooltip)
       this.wrapper = wrapper
 
@@ -112,8 +116,6 @@ function createPortal (contextAttributes) {
       if (this.props.className) {
         wrapper.className += ' ' + this.props.className
       }
-
-      wrapper.addEventListener('click', stopPropagation)
 
       setTimeout(() => {
         document.addEventListener('click', this.onClickOutside)
@@ -131,7 +133,19 @@ function createPortal (contextAttributes) {
       document.removeEventListener('click', this.onClickOutside)
       document.body.removeChild(this.wrapper)
     },
+    /**
+     *
+     * @param {Event} e click event
+     * @return {undefined}
+     */
     onClickOutside (e) {
+      if (
+        e.target.closest('#' + this.id) ||
+        e.target.closest('.' + modalClass)
+      ) {
+        return
+      }
+
       this.props.hide()
     },
     renderTooltip () {

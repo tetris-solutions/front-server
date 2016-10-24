@@ -12,12 +12,12 @@ import {required as baseContext} from '../../base-context'
 const notInput = el => !el || (upperCase(el.tagName) !== 'INPUT' && upperCase(el.tagName) !== 'TEXTAREA')
 
 const {PropTypes} = React
-const style = csjs`
+export const style = csjs`
 .full {
   width: 100%;
   height: 100%;
 }
-.wrapper extends .full {
+.modal extends .full {
   position: fixed;
   top: 0;
   left: 0;
@@ -106,7 +106,7 @@ function createPortal (contextAttributes) {
   document.body.style.overflow = 'hidden'
 
   // @todo remove dependency from animated
-  wrapper.className = `animated fadeIn ${style.wrapper}`
+  wrapper.className = `${style.modal} animated fadeIn`
 
   document.body.appendChild(wrapper)
 
