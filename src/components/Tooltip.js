@@ -114,7 +114,11 @@ function createPortal (contextAttributes) {
       }
 
       wrapper.addEventListener('click', stopPropagation)
-      document.addEventListener('click', this.props.hide)
+
+      setTimeout(() => {
+        document.addEventListener('click', this.onClickOutside)
+      }, 10)
+
       document.body.appendChild(wrapper)
 
       this.renderTooltip()
@@ -124,8 +128,11 @@ function createPortal (contextAttributes) {
     },
     componentWillUnmount () {
       unmountComponentAtNode(this.wrapper)
-      document.removeEventListener('click', this.props.hide)
+      document.removeEventListener('click', this.onClickOutside)
       document.body.removeChild(this.wrapper)
+    },
+    onClickOutside (e) {
+      this.props.hide()
     },
     renderTooltip () {
       this.wrapper.style.right = px(window.innerWidth - this.props.right)
