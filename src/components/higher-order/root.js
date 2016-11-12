@@ -15,7 +15,9 @@ function pushErrorMessage (tree, message) {
   return Promise.resolve().then(() => tree.push('alerts', {message}))
 }
 
-function buildMoment (locale) {
+const momentFor = {}
+
+function createScopedMoment (locale) {
   function moment (...args) {
     const m = _moment(...args)
     m.locale(locale)
@@ -28,7 +30,15 @@ function buildMoment (locale) {
     return m
   }
 
-  return moment
+  momentFor[locale] = moment
+}
+
+function buildMoment (locale) {
+  if (!momentFor[locale]) {
+    createScopedMoment(locale)
+  }
+
+  return momentFor[locale]
 }
 
 /**
