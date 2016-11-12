@@ -132,6 +132,7 @@ function createPortal (contextAttributes) {
     componentWillUnmount () {
       unmountComponentAtNode(this.wrapper)
       document.removeEventListener('click', this.onClickOutside)
+      document.removeEventListener('scroll', this.props.hide, true)
       document.body.removeChild(this.wrapper)
     },
     /**
