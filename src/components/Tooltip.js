@@ -119,6 +119,7 @@ function createPortal (contextAttributes) {
 
       setTimeout(() => {
         document.addEventListener('click', this.onClickOutside)
+        document.addEventListener('scroll', this.props.hide, true)
       }, 10)
 
       document.body.appendChild(wrapper)
