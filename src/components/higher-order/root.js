@@ -15,6 +15,22 @@ function pushErrorMessage (tree, message) {
   return Promise.resolve().then(() => tree.push('alerts', {message}))
 }
 
+function buildMoment (locale) {
+  function moment (...args) {
+    const m = _moment(...args)
+    m.locale(locale)
+    return m
+  }
+
+  moment.utc = (...args) => {
+    const m = _moment.utc(...args)
+    m.locale(locale)
+    return m
+  }
+
+  return moment
+}
+
 /**
  *
  * @param {Function} insertCss function for inserting a new stylesheet
@@ -51,6 +67,7 @@ export function root (insertCss) {
       },
       getChildContext () {
         const {routes, location, params, intl: {locales, messages}} = this.props
+
         return {
           insertCss,
           locales,
@@ -58,11 +75,7 @@ export function root (insertCss) {
           location,
           params,
           routes,
-          moment () {
-            const m = _moment(...arguments)
-            m.locale(locales)
-            return m
-          }
+          moment: buildMoment(locales)
         }
       },
       addAlerts () {
