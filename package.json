@@ -17,6 +17,7 @@
   ],
   "files": [
     "lib",
+    "ButtonWithPrompt.js",
     "Message.js",
     "Modal.js",
     "Tooltip.js",
