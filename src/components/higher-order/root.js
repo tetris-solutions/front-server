@@ -5,7 +5,7 @@ import _moment from 'moment'
 import window from 'global/window'
 import get from 'lodash/get'
 import omit from 'lodash/omit'
-import DefaultErrorScreen from '../ErrorScreen'
+import assign from 'lodash/assign'
 
 const isServer = typeof window === 'undefined'
 const ToastMessageFactory = React.createFactory(ToastMessage.animation)
@@ -39,6 +39,21 @@ function buildMoment (locale) {
   }
 
   return momentFor[locale]
+}
+
+const DefaultErrorScreen = ({error}) => (
+  <section>
+    <h3>{error.message}</h3>
+    <hr/>
+    <pre>{JSON.stringify(assign({
+      message: error.message,
+      stack: error.stack,
+      code: error.code
+    }, error), null, 2)}</pre>
+  </section>
+)
+DefaultErrorScreen.propTypes = {
+  error: PropTypes.object.isRequired
 }
 
 /**
@@ -128,7 +143,7 @@ export function root (insertCss) {
         return <div>
 
           {Header ? <Header /> : null}
-          {error ? <ErrorScreen /> : children}
+          {error ? <ErrorScreen error={error}/> : children}
 
           {!isServer && (
             <ToastContainer
