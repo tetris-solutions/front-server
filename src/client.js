@@ -104,4 +104,6 @@ export function createClient (getRoutes, defaultState) {
 
       loadLocale(localeCursor.get())
     })
+
+  return tree
 }
