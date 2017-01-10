@@ -88,6 +88,7 @@ function createPortal (contextAttributes) {
     contextTypes,
     id: 'tooltip-' + Math.random().toString(36).substr(2),
     propTypes: {
+      parent: PropTypes.object,
       hover: PropTypes.bool,
       hide: PropTypes.func.isRequired,
       onMouseEnter: PropTypes.func.isRequired,
@@ -119,7 +120,7 @@ function createPortal (contextAttributes) {
 
       setTimeout(() => {
         document.addEventListener('click', this.onClickOutside)
-        document.addEventListener('scroll', this.props.hide, true)
+        document.addEventListener('scroll', this.onScroll, true)
       }, 10)
 
       document.body.appendChild(wrapper)
@@ -132,8 +133,13 @@ function createPortal (contextAttributes) {
     componentWillUnmount () {
       unmountComponentAtNode(this.wrapper)
       document.removeEventListener('click', this.onClickOutside)
-      document.removeEventListener('scroll', this.props.hide, true)
+      document.removeEventListener('scroll', this.onScroll, true)
       document.body.removeChild(this.wrapper)
+    },
+    onScroll (e) {
+      if (e.target.contains(this.props.parent)) {
+        this.props.hide()
+      }
     },
     /**
      *
@@ -251,8 +257,8 @@ const Tooltip = React.createClass({
       this.parent.removeEventListener('click', this.toggle)
     }
   },
-  updateRect () {
-    this.setState(pick(
+  getRect () {
+    return pick(
       this.parent.getBoundingClientRect(),
       'bottom',
       'height',
@@ -260,7 +266,10 @@ const Tooltip = React.createClass({
       'right',
       'top',
       'width'
-    ))
+    )
+  },
+  updateRect () {
+    this.setState(this.getRect())
   },
   render () {
     if (!this.state.visible) {
@@ -270,6 +279,7 @@ const Tooltip = React.createClass({
     const {children, className, hover} = this.props
     const {Portal, onMouseLeave, onMouseEnter} = this
     const props = assign({
+      parent: this.parent,
       hide: this.hide,
       className,
       hover,
