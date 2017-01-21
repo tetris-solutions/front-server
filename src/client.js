@@ -3,7 +3,7 @@ import ReactDom from 'react-dom'
 import {createClientTree} from './client-tree'
 import {setupRoutes} from './setup-routes'
 import {GET} from '@tetris/http'
-import {browserHistory} from 'react-router'
+import {match, browserHistory} from 'react-router'
 import {loadScript} from './functions/load-script'
 import window from 'global/window'
 import moment from 'moment'
@@ -47,8 +47,15 @@ export function createClient (getRoutes, defaultState) {
       let hasRendered = false
 
       const render = () => {
-        ReactDom.render(setupRoutes(getRoutes, browserHistory, tree, insertCss),
-          window.document.getElementById('app'))
+        const {pathname, search} = window.location
+        const location = `${pathname}${search}`
+        const router = setupRoutes(getRoutes, browserHistory, tree, insertCss)
+        const {routes} = router.props
+
+        match({routes, location}, () => {
+          ReactDom.render(router,
+            window.document.getElementById('app'))
+        })
 
         hasRendered = true
       }

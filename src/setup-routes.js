@@ -39,10 +39,7 @@ export function setupRoutes (getRoutes, history, tree, insertCss) {
   // @todo `protectedRoute` should receive a second argument `permission` or maybe create a new function `checkPermission`
 
   const createRoot = require('./components/higher-order/root').root(insertCss)
+  const routes = getRoutes(tree, protectRoute, preload, createRoot)
 
-  return (
-    <Router history={history} onError={onError}>
-      {getRoutes(tree, protectRoute, preload, createRoot)}
-    </Router>
-  )
+  return <Router routes={routes} history={history} onError={onError}/>
 }
