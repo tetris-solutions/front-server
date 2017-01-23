@@ -137,7 +137,7 @@ function createPortal (contextAttributes) {
       document.body.removeChild(this.wrapper)
     },
     onScroll (e) {
-      const {parent: tooltipTarget, top} = this.props.parent
+      const {parent: tooltipTarget, top} = this.props
 
       window.requestAnimationFrame(() => {
         if (tooltipTarget.getBoundingClientRect().top !== top) {
