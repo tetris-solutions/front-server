@@ -137,9 +137,13 @@ function createPortal (contextAttributes) {
       document.body.removeChild(this.wrapper)
     },
     onScroll (e) {
-      if (e.target.contains(this.props.parent)) {
-        this.props.hide()
-      }
+      const {parent: tooltipTarget, top} = this.props.parent
+
+      window.requestAnimationFrame(() => {
+        if (tooltipTarget.getBoundingClientRect().top !== top) {
+          this.props.hide()
+        }
+      })
     },
     /**
      *
