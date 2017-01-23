@@ -87,11 +87,19 @@ function createPortal (contextAttributes) {
     },
     propTypes: {
       size: sizeType,
-      children: PropTypes.node.isRequired
+      children: PropTypes.node.isRequired,
+      onBackgroundClick: PropTypes.func
+    },
+    onClick (e) {
+      const isBackgroundClick = e.target === e.currentTarget
+
+      if (isBackgroundClick && this.props.onBackgroundClick) {
+        this.props.onBackgroundClick()
+      }
     },
     render () {
       return (
-        <div className={`${style.relativeLayer}`}>
+        <div className={`${style.relativeLayer}`} onClick={this.onClick}>
           <div className={`${style.content} ${style[this.props.size]}`}>
             {this.props.children}
           </div>
@@ -141,7 +149,7 @@ function createPortal (contextAttributes) {
     },
     renderModal () {
       render((
-        <Modal {...this.context} size={this.props.size}>
+        <Modal {...this.context} size={this.props.size} onBackgroundClick={this.props.onEscPress}>
           {this.props.children}
         </Modal>
       ), wrapper)
