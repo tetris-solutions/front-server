@@ -11,7 +11,7 @@ export function protectedRouteMiddleware (req, res, next) {
       ? req.url
       : `${req.protocol}://${req.hostname}${req.url}`
 
-    res.redirect(`${process.env.FRONT_URL}/login?next=${next}`)
+    res.redirect(`${process.env.FRONT_URL}/login?next=${encodeURIComponent(next)}`)
   } else {
     next()
   }

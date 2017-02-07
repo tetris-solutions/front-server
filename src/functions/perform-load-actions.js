@@ -25,7 +25,7 @@ export function performLoadActions (tree, actions) {
         const nextUrl = window.location.origin +
           nextState.location.pathname
 
-        window.location.href = `${process.env.FRONT_URL}/login?next=${nextUrl}`
+        window.location.href = `${process.env.FRONT_URL}/login?next=${encodeURIComponent(nextUrl)}`
       } else {
         tree.set('error', getErrorFromResponse(err))
         tree.commit()
