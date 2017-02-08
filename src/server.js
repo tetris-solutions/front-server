@@ -14,11 +14,6 @@ import merge from 'lodash/merge'
 
 global.fetch = fetch
 
-const flags = {
-  developmentMode: !process.env.BUILD_PROD,
-  productionMode: process.env.NODE_ENV === 'production'
-}
-
 const app = express()
 
 export function createServer ({
@@ -35,13 +30,13 @@ export function createServer ({
 }) {
   app.use(express.static(publicPath))
 
-  const morganMode = flags.productionMode === 'production'
+  const morganMode = process.env.NODE_ENV === 'production'
     ? 'combined'
     : 'short'
 
   app.use(morgan(morganMode, {stream: httpLogStream}))
 
-  if (flags.developmentMode) {
+  if (process.env.DEV_SERVER) {
     const {devServerHook} = require('./dev-server-hook')
 
     devServerHook(getWebpackConfig(), app)
@@ -51,7 +46,7 @@ export function createServer ({
   app.use(debugMiddleware)
 
   if (messagesFile) {
-    messages = flags.developmentMode
+    messages = process.env.DEV_SERVER
       ? syncMessages(messagesFile, globalMessages)
       : merge({}, globalMessages, require(messagesFile))
   }
