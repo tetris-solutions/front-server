@@ -2,7 +2,6 @@ import React from 'react'
 import ReactDOMServer from 'react-dom/server'
 import {setupRoutes} from './setup-routes'
 import {createMemoryHistory} from 'react-router'
-import beautify from 'js-beautify'
 import includes from 'lodash/includes'
 import getCss from 'csjs/get-css'
 
@@ -54,7 +53,7 @@ export function createServerRenderer (HTML, getRoutes, messages) {
 
     res.send('<!DOCTYPE html>\n' + (
         process.env.DEV_SERVER
-          ? beautify.html(markup)
+          ? require('js-beautify').html(markup)
           : markup
       ))
   }
