@@ -19,8 +19,6 @@ export function createServerRenderer (HTML, getRoutes, messages) {
    */
   function serverRenderRoute (req, res) {
     const location = req.url
-
-    const useBeautify = process.env.BEAUTIFY_HTML === 'true'
     const {tree} = res.locals
 
     tree.set('locale', req.locale)
@@ -40,7 +38,7 @@ export function createServerRenderer (HTML, getRoutes, messages) {
 
     const history = createMemoryHistory(location)
     const app = setupRoutes(getRoutes, history, tree, insertCss)
-    const appMarkup = useBeautify
+    const appMarkup = process.env.DEV_SERVER
       ? ReactDOMServer.renderToStaticMarkup(app)
       : ReactDOMServer.renderToString(app)
 
@@ -55,7 +53,9 @@ export function createServerRenderer (HTML, getRoutes, messages) {
     tree.release()
 
     res.send('<!DOCTYPE html>\n' + (
-        useBeautify ? beautify.html(markup) : markup
+        process.env.DEV_SERVER
+          ? beautify.html(markup)
+          : markup
       ))
   }
 
