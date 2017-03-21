@@ -10,8 +10,14 @@ export default React.createClass({
     messages: PropTypes.object
   },
   propTypes: {
+    tag: React.PropTypes.string,
     children: PropTypes.string.isRequired,
     html: PropTypes.bool
+  },
+  getDefaultProps () {
+    return {
+      tag: 'span'
+    }
   },
   render () {
     const messageName = trim(this.props.children)
@@ -22,11 +28,14 @@ export default React.createClass({
     const Component = this.props.html
       ? FormattedHTMLMessage
       : FormattedMessage
-    const props = omit(this.props, 'children', 'html')
+    const props = omit(this.props, 'children', 'html', 'tag')
     const intl = this.context
 
+    props.tagName = this.props.tag
+
     return (
-      <Component {...props}
+      <Component
+        {...props}
         message={intl.messages[messageName] || `[ ${messageName} ]`}
         locales={intl.locales}
         messages={intl.messages}/>
