@@ -5,6 +5,7 @@ import isEmpty from 'lodash/isEmpty'
 import pick from 'lodash/pick'
 import upperCase from 'lodash/toUpper'
 import React from 'react'
+import createReactClass from 'create-react-class'
 import {render, unmountComponentAtNode} from 'react-dom'
 import concat from 'lodash/concat'
 import StyledMixin from './mixins/styled'
@@ -78,7 +79,7 @@ function createPortal (contextAttributes) {
     }
   }
 
-  const Modal = React.createClass(assign({
+  const Modal = createReactClass(assign({
     displayName: 'Modal',
     getDefaultProps () {
       return {
@@ -118,49 +119,56 @@ function createPortal (contextAttributes) {
 
   document.body.appendChild(wrapper)
 
-  return React.createClass({
-    displayName: 'Portal',
-    contextTypes,
-    propTypes: {
+  return class extends React.Component {
+    static displayName = 'Portal'
+    static contextTypes = contextTypes
+
+    static propTypes = {
       size: sizeType,
       onEscPress: PropTypes.func,
       children: PropTypes.node.isRequired
-    },
+    }
+
     componentDidMount () {
       this.renderModal()
 
       if (this.props.onEscPress) {
         document.addEventListener('keyup', this.grepEsc)
       }
-    },
+    }
+
     componentDidUpdate () {
       this.renderModal()
-    },
+    }
+
     componentWillUnmount () {
       document.body.style.overflow = previousOverflow
       unmountComponentAtNode(wrapper)
       document.body.removeChild(wrapper)
       document.removeEventListener('keyup', this.grepEsc)
-    },
-    grepEsc (event) {
+    }
+
+    grepEsc = (event) => {
       if (notInput(event.target) && event.which === 27) {
         this.props.onEscPress()
       }
-    },
-    renderModal () {
+    }
+
+    renderModal = () => {
       render((
         <Modal {...this.context} size={this.props.size} onBackgroundClick={this.props.onEscPress}>
           {this.props.children}
         </Modal>
       ), wrapper)
-    },
+    }
+
     render () {
       return null
     }
-  })
+  }
 }
 
-const ModalSpawner = React.createClass({
+const ModalSpawner = createReactClass({
   displayName: 'Modal-Spawner',
   mixins: [StyledMixin],
   style,

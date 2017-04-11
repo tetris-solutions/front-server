@@ -1,4 +1,5 @@
 import React from 'react'
+import createReactClass from 'create-react-class'
 import ReactDOM from 'react-dom'
 import csjs from 'csjs'
 import StyledMixin from './mixins/styled'
@@ -58,7 +59,7 @@ function createPortal (contextAttributes) {
     }
   }
 
-  const DetachedTooltip = React.createClass(assign({
+  const DetachedTooltip = createReactClass(assign({
     displayName: 'Tooltip',
     propTypes: {
       children: PropTypes.node.isRequired,
@@ -83,7 +84,7 @@ function createPortal (contextAttributes) {
     }
   }, contextInjectorComponentConfig))
 
-  return React.createClass({
+  return createReactClass({
     displayName: 'Portal',
     contextTypes,
     id: 'tooltip-' + Math.random().toString(36).substr(2),
@@ -176,7 +177,7 @@ function createPortal (contextAttributes) {
   })
 }
 
-const Tooltip = React.createClass({
+const Tooltip = createReactClass({
   displayName: 'Tooltip',
   mixins: [StyledMixin],
   style,

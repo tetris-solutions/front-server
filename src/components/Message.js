@@ -1,24 +1,26 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import omit from 'lodash/omit'
 import trim from 'lodash/trim'
-const {PropTypes} = React
 
-export default React.createClass({
-  displayName: 'Message',
-  contextTypes: {
+export default class extends React.Component {
+  static displayName = 'Message'
+
+  static contextTypes = {
     locales: PropTypes.string,
     messages: PropTypes.object
-  },
-  propTypes: {
+  }
+
+  static propTypes = {
     tag: React.PropTypes.string,
     children: PropTypes.string.isRequired,
     html: PropTypes.bool
-  },
-  getDefaultProps () {
-    return {
-      tag: 'span'
-    }
-  },
+  }
+
+  static defaultProps = {
+    tag: 'span'
+  }
+
   render () {
     const messageName = trim(this.props.children)
 
@@ -41,4 +43,4 @@ export default React.createClass({
         messages={intl.messages}/>
     )
   }
-})
+}

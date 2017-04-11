@@ -63,9 +63,10 @@ DefaultErrorScreen.propTypes = {
  */
 export function root (insertCss) {
   return function createRoot (Header = null, ErrorScreen = DefaultErrorScreen) {
-    const Root = React.createClass({
-      displayName: 'Root',
-      propTypes: {
+    class Root extends React.Component {
+      static displayName = 'Root'
+
+      static propTypes = {
         children: PropTypes.node,
         alerts: PropTypes.array,
         error: PropTypes.object,
@@ -77,11 +78,13 @@ export function root (insertCss) {
         location: PropTypes.object,
         params: PropTypes.object,
         routes: PropTypes.array
-      },
-      contextTypes: {
+      }
+
+      static contextTypes = {
         router: PropTypes.object
-      },
-      childContextTypes: {
+      }
+
+      static childContextTypes = {
         insertCss: PropTypes.func,
         locales: PropTypes.string,
         messages: PropTypes.object,
@@ -89,7 +92,8 @@ export function root (insertCss) {
         params: PropTypes.object,
         moment: PropTypes.func,
         routes: PropTypes.array
-      },
+      }
+
       getChildContext () {
         const {routes, location, params, intl: {locales, messages}} = this.props
 
@@ -102,8 +106,9 @@ export function root (insertCss) {
           routes,
           moment: buildMoment(locales)
         }
-      },
-      addAlerts () {
+      }
+
+      addAlerts = () => {
         if (isServer) return
         let i
         const {alerts} = this.props
@@ -116,7 +121,8 @@ export function root (insertCss) {
           })
         }
         this.alertTailIndex = i
-      },
+      }
+
       componentDidMount () {
         this.alertTailIndex = 0
         this.addAlerts()
@@ -133,10 +139,12 @@ export function root (insertCss) {
 
         this.props.dispatch(pushErrorMessage, window.atob(redirectError))
           .then(() => this.context.router.push(location))
-      },
+      }
+
       componentDidUpdate () {
         this.addAlerts()
-      },
+      }
+
       render () {
         const {children, error} = this.props
 
@@ -152,7 +160,7 @@ export function root (insertCss) {
               className='toast-top-right'/>)}
         </div>
       }
-    })
+    }
 
     return branch({
       intl: ['intl'],

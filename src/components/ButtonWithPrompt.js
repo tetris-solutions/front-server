@@ -3,9 +3,10 @@ import Modal from './Modal'
 
 const st = {cursor: 'pointer'}
 
-const ButtonWithPrompt = React.createClass({
-  displayName: 'Button-With-Prompt',
-  propTypes: {
+class ButtonWithPrompt extends React.Component {
+  static displayName = 'Button-With-Prompt'
+
+  static propTypes = {
     children: React.PropTypes.func.isRequired,
     className: React.PropTypes.string,
     label: React.PropTypes.node.isRequired,
@@ -14,28 +15,30 @@ const ButtonWithPrompt = React.createClass({
       React.PropTypes.func,
       React.PropTypes.string
     ])
-  },
-  getInitialState () {
-    return {
-      isModalOpen: false
-    }
-  },
-  getDefaultProps () {
-    return {
-      size: 'small',
-      tag: 'button'
-    }
-  },
-  openModal () {
+  }
+
+  static defaultProps = {
+    size: 'small',
+    tag: 'button'
+  }
+
+  state = {
+    isModalOpen: false
+  }
+
+  openModal = () => {
     this.setState({isModalOpen: true})
-  },
-  closeModal () {
+  }
+
+  closeModal = () => {
     this.setState({isModalOpen: false})
-  },
-  onClick (e) {
+  }
+
+  onClick = (e) => {
     e.preventDefault()
     this.openModal()
-  },
+  }
+
   render () {
     const {tag: Tag, className, size, label, children: fn} = this.props
     const props = {className, onClick: this.onClick, style: st}
@@ -54,6 +57,6 @@ const ButtonWithPrompt = React.createClass({
       </Tag>
     )
   }
-})
+}
 
 export default ButtonWithPrompt
