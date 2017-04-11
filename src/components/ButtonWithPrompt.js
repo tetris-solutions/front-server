@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Modal from './Modal'
 
 const st = {cursor: 'pointer'}
@@ -7,13 +8,13 @@ class ButtonWithPrompt extends React.Component {
   static displayName = 'Button-With-Prompt'
 
   static propTypes = {
-    children: React.PropTypes.func.isRequired,
-    className: React.PropTypes.string,
-    label: React.PropTypes.node.isRequired,
-    size: React.PropTypes.string,
-    tag: React.PropTypes.oneOfType([
-      React.PropTypes.func,
-      React.PropTypes.string
+    children: PropTypes.func.isRequired,
+    className: PropTypes.string,
+    label: PropTypes.node.isRequired,
+    size: PropTypes.string,
+    tag: PropTypes.oneOfType([
+      PropTypes.func,
+      PropTypes.string
     ])
   }
 

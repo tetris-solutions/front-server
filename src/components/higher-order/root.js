@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import {branch} from 'baobab-react/higher-order'
 import {ToastContainer, ToastMessage} from 'react-toastr'
 import _moment from 'moment'
@@ -9,7 +10,6 @@ import assign from 'lodash/assign'
 
 const isServer = typeof window === 'undefined'
 const ToastMessageFactory = React.createFactory(ToastMessage.animation)
-const {PropTypes} = React
 
 function pushErrorMessage (tree, message) {
   return Promise.resolve().then(() => tree.push('alerts', {message}))

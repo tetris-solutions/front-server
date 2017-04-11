@@ -12,7 +12,7 @@ export default class extends React.Component {
   }
 
   static propTypes = {
-    tag: React.PropTypes.string,
+    tag: PropTypes.string,
     children: PropTypes.string.isRequired,
     html: PropTypes.bool
   }

@@ -1,8 +1,8 @@
-import React from 'react'
+import PropTypes from 'prop-types'
 
 export default {
   contextTypes: {
-    insertCss: React.PropTypes.func
+    insertCss: PropTypes.func
   },
   componentWillMount () {
     this.context.insertCss(this.style)

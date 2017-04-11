@@ -5,14 +5,15 @@ import isEmpty from 'lodash/isEmpty'
 import pick from 'lodash/pick'
 import upperCase from 'lodash/toUpper'
 import React from 'react'
+import PropTypes from 'prop-types'
 import createReactClass from 'create-react-class'
 import {render, unmountComponentAtNode} from 'react-dom'
 import concat from 'lodash/concat'
 import StyledMixin from './mixins/styled'
 import {required as baseContext} from '../../base-context'
+
 const notInput = el => !el || (upperCase(el.tagName) !== 'INPUT' && upperCase(el.tagName) !== 'TEXTAREA')
 
-const {PropTypes} = React
 export const style = csjs`
 .full {
   width: 100%;
