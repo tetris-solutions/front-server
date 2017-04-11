@@ -16,18 +16,7 @@ global.fetch = fetch
 
 const app = express()
 
-export function createServer ({
-                                httpLogStream,
-                                getRoutes,
-                                HTML,
-                                defaultState,
-                                publicPath,
-                                getWebpackConfig,
-                                messages,
-                                messagesFile,
-                                setAppRoutes,
-                                port
-                              }) {
+export function createServer ({httpLogStream, getRoutes, HTML, defaultState, publicPath, getWebpackConfig, messages, messagesFile, setAppRoutes, port}) {
   app.use(express.static(publicPath))
 
   const morganMode = process.env.NODE_ENV === 'production'

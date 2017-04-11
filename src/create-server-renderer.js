@@ -4,6 +4,7 @@ import {setupRoutes} from './setup-routes'
 import {createMemoryHistory} from 'react-router'
 import includes from 'lodash/includes'
 import getCss from 'csjs/get-css'
+import Helmet from 'react-helmet'
 
 global.React = React
 global.ReactIntl = require('react-intl/lib/react-intl')
@@ -42,9 +43,10 @@ export function createServerRenderer (HTML, getRoutes, messages) {
       : ReactDOMServer.renderToString(app)
 
     const css = styles.map(style => getCss(style)).join('\n')
+    const helmet = Helmet.renderStatic()
 
     const markup = ReactDOMServer.renderToStaticMarkup(
-      <HTML payload={tree.get()} css={css}>
+      <HTML payload={tree.get()} css={css} helmet={helmet}>
       {appMarkup}
       </HTML>
     )
