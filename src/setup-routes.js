@@ -18,7 +18,7 @@ export function setupRoutes (getRoutes, history, tree, insertCss) {
   function preload (...actions) {
     if (isServer) return
 
-    const hook = performLoadActions(tree, actions)
+    const onEnterHook = performLoadActions(tree, actions)
 
     function onEnter (nextState, replace, callback) {
       const currentUrl = window.location.origin +
@@ -31,7 +31,7 @@ export function setupRoutes (getRoutes, history, tree, insertCss) {
         return callback()
       }
 
-      hook(nextState, replace, callback)
+      onEnterHook(nextState, replace, callback)
     }
 
     return onEnter
