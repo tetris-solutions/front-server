@@ -11,11 +11,9 @@ function onError (err) {
   /* eslint-enable no-console */
 }
 
-const currentUrl = () => isServer ? null : window.location.href
-
 export function setupRoutes (getRoutes, history, tree, insertCss) {
   const protectRoute = isServer ? undefined : requireAuth(tree)
-  const originalUrl = currentUrl()
+  const originalUrl = isServer ? null : window.location.href
 
   function preload (...actions) {
     if (isServer) return
@@ -23,8 +21,13 @@ export function setupRoutes (getRoutes, history, tree, insertCss) {
     const hook = performLoadActions(tree, actions)
 
     function onEnter (nextState, replace, callback) {
-      // if this is the very first render, we can rely on the data injected by the server
-      if (originalUrl === currentUrl()) {
+      const currentUrl = window.location.origin +
+        nextState.location.pathname +
+        nextState.location.search
+
+      // if this is the very first render,
+      // we can rely on the data injected by the server
+      if (originalUrl === currentUrl) {
         return callback()
       }
 
