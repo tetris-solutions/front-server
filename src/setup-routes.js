@@ -11,15 +11,11 @@ function onError (err) {
   /* eslint-enable no-console */
 }
 
+const currentUrl = () => isServer ? null : window.location.href
+
 export function setupRoutes (getRoutes, history, tree, insertCss) {
   const protectRoute = isServer ? undefined : requireAuth(tree)
-  let firstRender = true
-
-  if (!isServer) {
-    setTimeout(() => {
-      firstRender = false
-    }, 0)
-  }
+  const originalUrl = currentUrl()
 
   function preload (...actions) {
     if (isServer) return
@@ -28,7 +24,9 @@ export function setupRoutes (getRoutes, history, tree, insertCss) {
 
     function onEnter (nextState, replace, callback) {
       // if this is the very first render, we can rely on the data injected by the server
-      if (firstRender) return callback()
+      if (originalUrl === currentUrl()) {
+        return callback()
+      }
 
       hook(nextState, replace, callback)
     }
