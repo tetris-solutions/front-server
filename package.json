@@ -1,6 +1,6 @@
 {
   "name": "tetris-iso",
-  "version": "0.5.14",
+  "version": "0.5.15",
   "description": "general front server library",
   "engineStrict": true,
   "engines": {
