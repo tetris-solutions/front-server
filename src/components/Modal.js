@@ -35,11 +35,10 @@ export const style = csjs`
   position: relative;
   background: white;
   padding: .5em;
-      
+
   height: auto;
-  min-height: 300px;
   max-height: 98%;
-  
+
   margin: auto;
   overflow-x: hidden;
   overflow-y: auto;
@@ -89,6 +88,7 @@ function createPortal (contextAttributes) {
     },
     propTypes: {
       size: sizeType,
+      minHeight: PropTypes.number.isRequired,
       children: PropTypes.node.isRequired,
       onBackgroundClick: PropTypes.func
     },
@@ -100,10 +100,12 @@ function createPortal (contextAttributes) {
       }
     },
     render () {
+      const {children, size, minHeight} = this.props
+
       return (
         <div className={`${style.relativeLayer}`} onClick={this.onClick}>
-          <div className={`${style.content} ${style[this.props.size]}`}>
-            {this.props.children}
+          <div className={`${style.content} ${style[size]}`} style={{minHeight}}>
+            {children}
           </div>
         </div>
       )
@@ -126,6 +128,7 @@ function createPortal (contextAttributes) {
 
     static propTypes = {
       size: sizeType,
+      minHeight: PropTypes.number.isRequired,
       onEscPress: PropTypes.func,
       children: PropTypes.node.isRequired
     }
@@ -156,9 +159,11 @@ function createPortal (contextAttributes) {
     }
 
     renderModal = () => {
+      const {children, size, onEscPress, minHeight} = this.props
+
       render((
-        <Modal {...this.context} size={this.props.size} onBackgroundClick={this.props.onEscPress}>
-          {this.props.children}
+        <Modal {...this.context} size={size} onBackgroundClick={onEscPress} minHeight={minHeight}>
+          {children}
         </Modal>
       ), wrapper)
     }
@@ -175,13 +180,15 @@ const ModalSpawner = createReactClass({
   style,
   propTypes: {
     size: sizeType,
+    minHeight: PropTypes.number,
     onEscPress: PropTypes.func,
     children: PropTypes.node.isRequired,
     provide: PropTypes.array
   },
   getDefaultProps () {
     return {
-      provide: []
+      provide: [],
+      minHeight: 300
     }
   },
   componentWillMount () {
@@ -189,10 +196,10 @@ const ModalSpawner = createReactClass({
   },
   render () {
     const {Portal} = this
-    const {onEscPress, children, size} = this.props
+    const {onEscPress, children, size, minHeight} = this.props
 
     return (
-      <Portal size={size} onEscPress={onEscPress}>
+      <Portal size={size} onEscPress={onEscPress} minHeight={minHeight}>
         {children}
       </Portal>
     )
