@@ -2,6 +2,11 @@ import React from 'react'
 import {Router} from 'react-router'
 import {requireAuth} from './functions/require-auth'
 import {performLoadActions} from './functions/perform-load-actions'
+import {addLocaleData} from 'react-intl'
+import en from 'react-intl/locale-data/en'
+import pt from 'react-intl/locale-data/pt'
+
+addLocaleData([...en, ...pt])
 
 const isServer = typeof window === 'undefined'
 

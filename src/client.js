@@ -37,80 +37,64 @@ function insertCss (style) {
 }
 
 export function createClient (getRoutes, defaultState) {
-  const tree = createClientTree(defaultState)
+  const tree = window.$tate = createClientTree(defaultState)
   const loadedLocales = {
     [tree.get('locale')]: tree.get('intl')
   }
 
-  loadScript('/js/react-intl.min.js')
-    .then(() => {
-      let hasRendered = false
+  function render () {
+    const {pathname, search} = window.location
+    const location = `${pathname}${search}`
+    const router = setupRoutes(getRoutes, browserHistory, tree, insertCss)
+    const {routes} = router.props
 
-      const render = () => {
-        const {pathname, search} = window.location
-        const location = `${pathname}${search}`
-        const router = setupRoutes(getRoutes, browserHistory, tree, insertCss)
-        const {routes} = router.props
+    match({routes, location}, () =>
+      ReactDom.render(router,
+        window.document.getElementById('app')))
+  }
 
-        match({routes, location}, () => {
-          ReactDom.render(router,
-            window.document.getElementById('app'))
-        })
+  function loadIntl (locale) {
+    if (loadedLocales[locale]) {
+      return Promise.resolve(loadedLocales[locale])
+    }
 
-        hasRendered = true
-      }
+    return GET(`/intl/${locale}`)
+      .then(({data}) => data)
+  }
 
-      function loadIntl (locale) {
-        if (loadedLocales[locale]) {
-          return Promise.resolve(loadedLocales[locale])
-        }
-
-        return GET(`/intl/${locale}`).then(({data}) => data)
-      }
-
-      /**
-       * loads a given locale and save it in application the state tree
-       * @param {string} locale the locale to laod
-       * @returns {Promise} return a promise that will be resolved once all resources are loaded
-       */
-      function loadLocale (locale) {
-        const src = '/js/' + locale.split('-')[0] + '.js'
-
-        return Promise.all([loadScript(src), loadIntl(locale)])
-          .then(args => {
-            const intl = args.pop()
-
-            loadedLocales[locale] = intl
-            tree.set('intl', intl)
-            tree.commit()
-
-            if (!hasRendered) {
-              render()
-            }
-          })
-      }
-
-      function changeLocale (locale) {
-        loadLocale(locale)
-
-        if (tree.get('user')) {
-          tree.set(['user', 'locale'], locale)
-          tree.commit()
-
-          updateUserLocaleAction(tree, locale)
-        }
-      }
-
-      const localeCursor = tree.select('locale')
-
-      localeCursor.on('update', ({data: {currentData}}) => {
-        if (currentData) {
-          changeLocale(currentData)
-        }
+  /**
+   * loads a given locale and save it in application the state tree
+   * @param {string} locale the locale to laod
+   * @returns {Promise} return a promise that will be resolved once all resources are loaded
+   */
+  const loadLocale = locale =>
+    Promise.all([loadScript(`/js/intl/${locale}.js`), loadIntl(locale)])
+      .then(([_, intl]) => {
+        loadedLocales[locale] = intl
+        tree.set('intl', intl)
+        tree.commit()
       })
 
-      loadLocale(localeCursor.get())
-    })
+  function changeLocale (locale) {
+    loadLocale(locale)
+
+    if (tree.get('user')) {
+      tree.set(['user', 'locale'], locale)
+      tree.commit()
+
+      updateUserLocaleAction(tree, locale)
+    }
+  }
+
+  const localeCursor = tree.select('locale')
+
+  localeCursor.on('update', ({data: {currentData}}) => {
+    if (currentData) {
+      changeLocale(currentData)
+    }
+  })
+
+  render()
 
   return tree
 }

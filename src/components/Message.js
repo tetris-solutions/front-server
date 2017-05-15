@@ -1,7 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import omit from 'lodash/omit'
+import pick from 'lodash/pick'
 import trim from 'lodash/trim'
+import {FormattedMessage, FormattedHTMLMessage} from 'react-intl'
 
 export default class extends React.Component {
   static displayName = 'Message'
@@ -26,21 +28,16 @@ export default class extends React.Component {
 
     if (!messageName) return '[ ___ ]'
 
-    const {FormattedMessage, FormattedHTMLMessage} = ReactIntl
     const Component = this.props.html
       ? FormattedHTMLMessage
       : FormattedMessage
-    const props = omit(this.props, 'children', 'html', 'tag')
-    const intl = this.context
-
-    props.tagName = this.props.tag
 
     return (
       <Component
-        {...props}
-        message={intl.messages[messageName] || `[ ${messageName} ]`}
-        locales={intl.locales}
-        messages={intl.messages}/>
+        id={messageName}
+        values={omit(this.props, 'children', 'html', 'tag')}
+        tagName={this.props.tag}
+        {...pick(this.props, 'className', 'style')}/>
     )
   }
 }

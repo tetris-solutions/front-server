@@ -7,6 +7,7 @@ import window from 'global/window'
 import get from 'lodash/get'
 import omit from 'lodash/omit'
 import assign from 'lodash/assign'
+import {IntlProvider} from 'react-intl'
 
 const isServer = typeof window === 'undefined'
 const ToastMessageFactory = React.createFactory(ToastMessage.animation)
@@ -146,19 +147,23 @@ export function root (insertCss) {
       }
 
       render () {
-        const {children, error} = this.props
+        const {children, error, intl} = this.props
 
-        return <div>
+        return (
+          <IntlProvider locale={intl.locales} messages={intl.messages}>
+            <div>
 
-          {Header ? <Header /> : null}
-          {error ? <ErrorScreen error={error}/> : children}
+              {Header ? <Header /> : null}
+              {error ? <ErrorScreen error={error}/> : children}
 
-          {!isServer && (
-            <ToastContainer
-              ref='toaster'
-              toastMessageFactory={ToastMessageFactory}
-              className='toast-top-right'/>)}
-        </div>
+              {!isServer && (
+                <ToastContainer
+                  ref='toaster'
+                  toastMessageFactory={ToastMessageFactory}
+                  className='toast-top-right'/>)}
+            </div>
+          </IntlProvider>
+        )
       }
     }
 

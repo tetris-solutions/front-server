@@ -7,8 +7,8 @@ import getCss from 'csjs/get-css'
 import Helmet from 'react-helmet'
 
 global.React = React
-global.ReactIntl = require('react-intl/lib/react-intl')
-require('react-intl/lib/locales')
+// global.ReactIntl = require('react-intl/lib/react-intl')
+// require('react-intl/lib/locales')
 
 export function createServerRenderer (HTML, getRoutes, messages) {
   /**
@@ -46,7 +46,7 @@ export function createServerRenderer (HTML, getRoutes, messages) {
     const helmet = Helmet.renderStatic()
 
     const markup = ReactDOMServer.renderToStaticMarkup(
-      <HTML payload={tree.get()} css={css} helmet={helmet}>
+      <HTML state={tree.get()} css={css} helmet={helmet}>
       {appMarkup}
       </HTML>
     )
