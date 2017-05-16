@@ -113,7 +113,7 @@ export function root (insertCss) {
         let i
         const {alerts} = this.props
         for (i = this.alertTailIndex; i < alerts.length; i++) {
-          const {message, level} = alerts[i]
+          const {message, level = 'error'} = alerts[i]
           const createAlert = Alert[level] || Alert.info
 
           createAlert(message, {
