@@ -1,16 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {branch} from 'baobab-react/higher-order'
-import {ToastContainer, ToastMessage} from 'react-toastr'
 import _moment from 'moment'
 import window from 'global/window'
 import get from 'lodash/get'
 import omit from 'lodash/omit'
 import assign from 'lodash/assign'
 import {IntlProvider} from 'react-intl'
+import Alert from 'react-s-alert'
 
 const isServer = typeof window === 'undefined'
-const ToastMessageFactory = React.createFactory(ToastMessage.animation)
 
 function pushErrorMessage (tree, message) {
   return Promise.resolve().then(() => tree.push('alerts', {message}))
@@ -115,10 +114,14 @@ export function root (insertCss) {
         const {alerts} = this.props
         for (i = this.alertTailIndex; i < alerts.length; i++) {
           const {message, level} = alerts[i]
+          const createAlert = Alert[level] || Alert.info
 
-          this.refs.toaster[level || 'error'](message, null, {
-            timeOut: 5 * 1000,
-            extendedTimeOut: 10 * 1000
+          createAlert(message, {
+            position: 'top-right',
+            effect: level === 'error' || level === 'warning'
+              ? 'slide'
+              : 'flip',
+            timeOut: 5 * 1000
           })
         }
         this.alertTailIndex = i
@@ -156,11 +159,7 @@ export function root (insertCss) {
               {Header ? <Header /> : null}
               {error ? <ErrorScreen error={error}/> : children}
 
-              {!isServer && (
-                <ToastContainer
-                  ref='toaster'
-                  toastMessageFactory={ToastMessageFactory}
-                  className='toast-top-right'/>)}
+              {!isServer && <Alert stack={{limit: 5}}/>}
             </div>
           </IntlProvider>
         )
