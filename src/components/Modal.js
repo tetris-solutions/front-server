@@ -57,6 +57,14 @@ export const style = csjs`
 }`
 
 const sizeType = PropTypes.oneOf(['small', 'medium', 'large', 'huge'])
+const escPressCallbackRegister = {}
+
+function unmountNext (event, callback) {
+  const id = String(event.timeStamp)
+
+  clearTimeout(escPressCallbackRegister[id])
+  escPressCallbackRegister[id] = setTimeout(callback, 100)
+}
 
 function createPortal (contextAttributes) {
   if (typeof window === 'undefined') return () => null
@@ -154,7 +162,7 @@ function createPortal (contextAttributes) {
 
     grepEsc = (event) => {
       if (notInput(event.target) && event.which === 27) {
-        this.props.onEscPress()
+        unmountNext(event, this.props.onEscPress)
       }
     }
 
