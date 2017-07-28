@@ -4,7 +4,6 @@ import createReactClass from 'create-react-class'
 import ReactDOM from 'react-dom'
 import csjs from 'csjs'
 import StyledMixin from './mixins/styled'
-import isEmpty from 'lodash/isEmpty'
 import forEach from 'lodash/forEach'
 import pick from 'lodash/pick'
 import assign from 'lodash/assign'
@@ -41,29 +40,30 @@ const style = csjs`
 function createPortal (contextAttributes) {
   if (typeof window === 'undefined') return () => null
 
-  let contextInjectorComponentConfig, contextTypes
-
-  if (!isEmpty(contextAttributes)) {
-    contextTypes = {}
-
-    forEach(contextAttributes, function addToContext (key) {
-      contextTypes[key] = PropTypes.any
-    })
-
-    contextInjectorComponentConfig = {
-      childContextTypes: contextTypes,
-      getChildContext () {
-        return pick(this.props, contextAttributes)
-      }
-    }
+  const contextTypes = {
+    hideTooltip: PropTypes.func
   }
 
-  const DetachedTooltip = createReactClass(assign({
-    displayName: 'Tooltip',
-    propTypes: {
+  forEach(contextAttributes, function addToContext (key) {
+    contextTypes[key] = PropTypes.any
+  })
+
+  class DetachedTooltip extends React.Component {
+    static displayName = 'Tooltip'
+    static propTypes = {
       children: PropTypes.node.isRequired,
       hide: PropTypes.func.isRequired
-    },
+    }
+    static childContextTypes = contextTypes
+
+    getChildContext () {
+      const ctx = pick(this.props, contextAttributes)
+
+      ctx.hideTooltip = this.props.hide
+
+      return ctx
+    }
+
     render () {
       const {children, hide} = this.props
 
@@ -81,7 +81,7 @@ function createPortal (contextAttributes) {
 
       return children
     }
-  }, contextInjectorComponentConfig))
+  }
 
   return createReactClass({
     displayName: 'Portal',
