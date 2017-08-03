@@ -96,6 +96,7 @@ function createPortal (contextAttributes) {
     },
     propTypes: {
       size: sizeType,
+      tooltipId: PropTypes.string,
       minHeight: PropTypes.number.isRequired,
       children: PropTypes.node.isRequired,
       onBackgroundClick: PropTypes.func
@@ -108,10 +109,13 @@ function createPortal (contextAttributes) {
       }
     },
     render () {
-      const {children, size, minHeight} = this.props
+      const {children, size, minHeight, tooltipId} = this.props
 
       return (
-        <div className={`${style.relativeLayer}`} onClick={this.onClick}>
+        <div
+          className={`${style.relativeLayer}`}
+          data-tooltip-id={tooltipId}
+          onClick={this.onClick}>
           <div className={`${style.content} ${style[size]}`} style={{minHeight}}>
             {children}
           </div>
@@ -132,7 +136,9 @@ function createPortal (contextAttributes) {
 
   return class extends React.Component {
     static displayName = 'Portal'
-    static contextTypes = contextTypes
+    static contextTypes = assign(contextTypes, {
+      tooltipId: PropTypes.string
+    })
 
     static propTypes = {
       size: sizeType,
