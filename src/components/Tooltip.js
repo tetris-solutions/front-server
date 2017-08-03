@@ -87,7 +87,7 @@ function createPortal (contextAttributes) {
 
   class Portal extends React.Component {
     static displayName = 'Portal'
-    static id = 'tooltip-' + Math.random().toString(36).substr(2)
+
     static propTypes = {
       parent: PropTypes.object,
       hover: PropTypes.bool,
@@ -105,6 +105,8 @@ function createPortal (contextAttributes) {
       children: PropTypes.node.isRequired
     }
     static contextTypes = omit(contextTypes, 'hideTooltip', 'tooltipId')
+
+    id = 'tooltip-' + Math.random().toString(36).substr(2)
 
     componentDidMount () {
       const wrapper = document.createElement('div')
