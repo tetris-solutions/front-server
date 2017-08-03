@@ -112,11 +112,11 @@ function createPortal (contextAttributes) {
       const {children, size, minHeight, tooltipId} = this.props
 
       return (
-        <div
-          className={`${style.relativeLayer}`}
-          data-tooltip-id={tooltipId}
-          onClick={this.onClick}>
-          <div className={`${style.content} ${style[size]}`} style={{minHeight}}>
+        <div className={`${style.relativeLayer}`} onClick={this.onClick}>
+          <div
+            className={`${style.content} ${style[size]}`}
+            style={{minHeight}}
+            data-tooltip-id={tooltipId}>
             {children}
           </div>
         </div>
