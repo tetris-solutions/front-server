@@ -12,8 +12,8 @@ import concat from 'lodash/concat'
 import isString from 'lodash/isString'
 import isFunction from 'lodash/isFunction'
 import {required as baseContext} from '../../base-context'
+import {setTooltipStyle} from '../functions/set-tooltip-style'
 
-const px = n => `${n}px`
 const {render, unmountComponentAtNode, findDOMNode} = ReactDOM
 const style = csjs`
 .hidden {
@@ -35,6 +35,28 @@ const style = csjs`
     0 3px 1px -2px rgba(0,0,0,.2),
     0 1px 5px 0 rgba(0,0,0,.12);
 }`
+
+const positionType = PropTypes.oneOf([
+  'bottom right', // inside outside
+  'bottom left',
+  'top right',
+  'top left',
+
+  'bottom right outside outside',
+  'bottom left outside outside',
+  'top right outside outside',
+  'top left outside outside',
+
+  'bottom right inside inside',
+  'bottom left inside inside',
+  'top right inside inside',
+  'top left inside inside',
+
+  'bottom right outside inside',
+  'bottom left outside inside',
+  'top right outside inside',
+  'top left outside inside'
+])
 
 function createPortal (contextAttributes) {
   if (typeof window === 'undefined') return () => null
@@ -89,6 +111,7 @@ function createPortal (contextAttributes) {
     static displayName = 'Portal'
 
     static propTypes = {
+      position: positionType,
       parent: PropTypes.object,
       hover: PropTypes.bool,
       persist: PropTypes.bool,
@@ -173,19 +196,31 @@ function createPortal (contextAttributes) {
       }
     }
 
+    updateWrapperStyle () {
+      setTooltipStyle(
+        this.wrapper.style,
+        this.props.position,
+        this.props.top,
+        this.props.right,
+        this.props.bottom,
+        this.props.left
+      )
+    }
+
     renderTooltip () {
-      this.wrapper.style.right = px(window.innerWidth - this.props.right)
-      this.wrapper.style.top = px(this.props.bottom + 5)
+      const {hide, children} = this.props
+
+      this.updateWrapperStyle()
 
       render((
-        <DetachedTooltip {...this.context} hide={this.props.hide} id={this.id}>
-          {this.props.children}
+        <DetachedTooltip {...this.context} hide={hide} id={this.id}>
+          {children}
         </DetachedTooltip>
       ), this.wrapper)
     }
 
     render () {
-      return <span className={String(style.hidden)}/>
+      return <span className={style.hidden}/>
     }
   }
 
@@ -197,6 +232,7 @@ const Tooltip = createReactClass({
   mixins: [StyledMixin],
   style,
   propTypes: {
+    position: positionType,
     persist: PropTypes.bool,
     hover: PropTypes.bool,
     className: PropTypes.string,
@@ -205,6 +241,7 @@ const Tooltip = createReactClass({
   },
   getDefaultProps () {
     return {
+      position: 'bottom right',
       hover: false,
       provide: []
     }
@@ -294,10 +331,10 @@ const Tooltip = createReactClass({
   },
   render () {
     if (!this.state.visible) {
-      return <span className={String(style.hidden)}/>
+      return <span className={style.hidden}/>
     }
 
-    const {children, className, hover, persist} = this.props
+    const {children, className, hover, persist, position} = this.props
     const {Portal, onMouseLeave, onMouseEnter} = this
     const props = assign({
       parent: this.parent,
@@ -305,6 +342,7 @@ const Tooltip = createReactClass({
       className,
       hover,
       persist,
+      position,
       onMouseLeave,
       onMouseEnter
     }, this.state)
