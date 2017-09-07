@@ -26,39 +26,39 @@ const pos = position => position.split(' ')
 export function setTooltipStyle (style, position, top, right, bottom, left) {
   const [y, x, xAttachment = 'inside', yAttachment = 'outside'] = pos(position)
 
+  const transform = []
+
   if (x === 'right') {
     if (xAttachment === 'outside') {
       style.left = px(right + PADDING)
-      style.right = ''
     } else {
-      style.right = px(window.innerWidth - right)
-      style.left = ''
+      style.left = px(right)
+      transform.push('translateX(-100%)')
     }
   } else if (x === 'left') {
     if (xAttachment === 'outside') {
-      style.right = px(left - PADDING)
-      style.left = ''
+      style.left = px(left - PADDING)
+      transform.push('translateX(-100%)')
     } else {
       style.left = px(left)
-      style.right = ''
     }
   }
 
   if (y === 'bottom') {
     if (yAttachment === 'outside') {
       style.top = px(bottom + PADDING)
-      style.bottom = ''
     } else {
-      style.bottom = px(bottom)
-      style.top = ''
+      style.top = px(bottom)
+      transform.push('translateY(-100%)')
     }
   } else if (y === 'top') {
     if (yAttachment === 'outside') {
-      style.bottom = px(top + PADDING)
-      style.top = ''
+      style.top = px(top - PADDING)
+      transform.push('translateY(-100%)')
     } else {
       style.top = px(top)
-      style.right = ''
     }
   }
+
+  style.transform = transform.join(' ')
 }
