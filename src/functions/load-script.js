@@ -40,4 +40,3 @@ export function loadScript (src) {
   }
   return onTheFly[src]
 }
-

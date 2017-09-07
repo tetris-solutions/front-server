@@ -28,4 +28,3 @@ export function performActionsMiddleware (...actions) {
 
   return resolveActions
 }
-

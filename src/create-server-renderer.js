@@ -47,17 +47,17 @@ export function createServerRenderer (HTML, getRoutes, messages) {
 
     const markup = ReactDOMServer.renderToStaticMarkup(
       <HTML state={tree.get()} css={css} helmet={helmet}>
-      {appMarkup}
+        {appMarkup}
       </HTML>
     )
 
     tree.release()
 
     res.send('<!DOCTYPE html>\n' + (
-        process.env.DEV_SERVER
-          ? require('js-beautify').html(markup)
-          : markup
-      ))
+      process.env.DEV_SERVER
+        ? require('js-beautify').html(markup)
+        : markup
+    ))
   }
 
   return serverRenderRoute

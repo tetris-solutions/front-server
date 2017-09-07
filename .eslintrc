@@ -3,16 +3,18 @@
     "standard",
     "standard-react"
   ],
-  "parser": "babel-eslint",
   "globals": {
-    "ReactIntl": true
+    "google": true
   },
+  "parser": "babel-eslint",
   "rules": {
     "valid-jsdoc": 2,
     "no-console": 2,
     "no-debugger": 2,
     "prefer-const": 2,
     "arrow-parens": 0,
-    "react/jsx-space-before-closing": 0
+    "camelcase": 0,
+    "react/no-unused-prop-types": 0,
+    "react/jsx-tag-spacing": 0
   }
 }

@@ -18,4 +18,3 @@ export function logoutAction (tree) {
   tree.set('user', null)
   tree.commit()
 }
-

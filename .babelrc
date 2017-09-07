@@ -1,9 +1,35 @@
 {
   "presets": [
-    "es2015",
-    "react"
+    [
+      "env",
+      {
+        "targets": {
+          "browsers": [
+            "> 15% in BR"
+          ],
+          "node": "7"
+        },
+        "useBuiltIns": true,
+        "loose": true
+      }
+    ]
   ],
   "plugins": [
-    "transform-class-properties"
+    "external-helpers",
+    "syntax-jsx",
+    [
+      "transform-react-jsx",
+      {
+        "useBuiltIns": true
+      }
+    ],
+    "transform-react-inline-elements",
+    "transform-react-constant-elements",
+    [
+      "transform-class-properties",
+      {
+        "loose": true
+      }
+    ]
   ]
 }

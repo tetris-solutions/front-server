@@ -28,4 +28,3 @@ export function saveResponseTokenAsCookie (response) {
   }
   return response
 }
-
