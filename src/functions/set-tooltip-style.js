@@ -24,7 +24,7 @@ const pos = position => position.split(' ')
  * @return {undefined}
  */
 export function setTooltipStyle (style, position, top, right, bottom, left) {
-  const [y, x, xAttachment = 'inside', yAttachment = 'outside'] = pos(position)
+  const [y, x, yAttachment = 'outside', xAttachment = 'inside'] = pos(position)
 
   const transform = []
 

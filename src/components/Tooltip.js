@@ -37,7 +37,7 @@ const style = csjs`
 }`
 
 const positionType = PropTypes.oneOf([
-  'bottom right', // inside outside
+  'bottom right', // outside inside
   'bottom left',
   'top right',
   'top left',
@@ -52,10 +52,10 @@ const positionType = PropTypes.oneOf([
   'top right inside inside',
   'top left inside inside',
 
-  'bottom right outside inside',
-  'bottom left outside inside',
-  'top right outside inside',
-  'top left outside inside'
+  'bottom right inside outside',
+  'bottom left inside outside',
+  'top right inside outside',
+  'top left inside outside'
 ])
 
 function createPortal (contextAttributes) {
